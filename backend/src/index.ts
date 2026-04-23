@@ -26,6 +26,7 @@ AllisWell();
 
 //! garcefully shutting down the server
 async function shutdown(signal: string) {
+    console.log(`Shutting down due to ${signal}`);
 
     // redis disconnest
 
