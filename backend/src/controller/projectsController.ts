@@ -1,8 +1,8 @@
 
 import { type Request, type Response } from 'express';
-import { prisma } from '../lib/prisma';
+import { prisma } from '../lib/prisma.js';
 import { use } from 'react';
-import { errorResponse } from '../utils/errot';
+import { errorResponse } from '../utils/errot.js';
 import { randomBytes } from 'node:crypto';
 
 
@@ -146,42 +146,58 @@ export const deleteProjectController = async (req: Request, res: Response) => {
 
 
 // to rotate or change the api-key
-export const rotateApiKeyController = async(req:Request, res:Response) => {
+export const rotateApiKeyController = async (req: Request, res: Response) => {
     try {
 
         const projectId = req.params.projectId;
 
         const project = await prisma.project.update({
-                   where:{
-                    id: projectId as string
-                   },
-                   data: {
-                    apiKey: randomBytes(32).toString('hex')
-                   }
+            where: {
+                id: projectId as string
+            },
+            data: {
+                apiKey: randomBytes(32).toString('hex')
+            }
         });
 
         // not clear the cache from the old api-key project
-        
+
         return res.status(200).json({ project });
-        
+
     } catch (error) {
-         console.log('Error while rotating the api-key:', error);
-         return errorResponse(res, 500, 'Failed to rotate the api-key');
+        console.log('Error while rotating the api-key:', error);
+        return errorResponse(res, 500, 'Failed to rotate the api-key');
     }
 }
 
 
 
 // to get the states of a running project
-export const getProjectStatesController = async(req:Request, res:Response) => {
+export const getProjectStatesController = async (req: Request, res: Response) => {
     try {
 
         const projectId = req.params.projectId;
 
         // logic for getting the states of a running project -> let's see after
-        
+
     } catch (error) {
         console.log('Error while fetching the project states:', error);
         return errorResponse(res, 500, 'Failed to fetch the project states');
     }
+}
+
+
+
+// to get the events related to the running project
+
+export const getEventsOfRunningProjectController = async (req: Request, res: Response) => {
+
+    try {
+        //! lets see it later..(phle se nahi krna ispe kaam, okk)
+    } catch (error) {
+        console.log('Error while fetching the events of the running project:', error);
+        return errorResponse(res, 500, 'Failed to fetch the events of the running project');
+    }
+
+
 }

@@ -1,7 +1,9 @@
 import { type Request, type Response, type NextFunction } from 'express';
-import { errorResponse } from '../utils/errot';
+import { configDotenv } from 'dotenv';
+configDotenv();
+import { errorResponse } from '../utils/errot.js';
 import jwt from 'jsonwebtoken';
-import { prisma } from '../lib/prisma';
+import { prisma } from '../lib/prisma.js';
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
 
@@ -17,7 +19,7 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
 
     try {
 
-        const paylaod = jwt.verify(token, process.env.JWT_SECRET as string) as { userId: string };
+        const paylaod = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret') as { userId: string };
         if (!paylaod) {
             return errorResponse(res, 401, 'Unauthorized');
         }

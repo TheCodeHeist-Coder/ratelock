@@ -4,8 +4,8 @@ import express, {type Request,type Response} from 'express';
 import cors from 'cors'
 import helmet from 'helmet';
 import morgan from 'morgan';
-import authRoutes from './routes/auth'
-import projectsRoutes from './routes/projects'
+import authRoutes from './routes/auth.js'
+import projectsRoutes from './routes/projects.js'
 
 
 const app = express();

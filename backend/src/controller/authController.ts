@@ -1,7 +1,7 @@
 import { type Request, type Response } from "express"
-import { prisma } from "../lib/prisma"
+import { prisma } from "../lib/prisma.js"
 import bcrypt from 'bcrypt';
-import { errorResponse } from "../utils/errot";
+import { errorResponse } from "../utils/errot.js";
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
@@ -44,7 +44,23 @@ export const userRegisterController = async (req: Request, res: Response) => {
             },
         });
 
-        return res.status(201).json({ user });
+
+        const token = jwt.sign({
+            userId: user.id, userEmail: user.email
+        }, JWT_SECRET, { expiresIn: '16d' });
+
+
+
+        return res.status(201).json({
+            token,
+            user: {
+                userId: user.id,
+                email: user.email,
+                name: user.name,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt,
+            }
+        });
     } catch (err: any) {
         if (err.code === 'P2002') {
             return

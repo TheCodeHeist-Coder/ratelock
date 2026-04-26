@@ -1,7 +1,7 @@
 
 import { type NextFunction, type Request, type Response } from "express";
-import { errorResponse } from "../utils/errot";
-import { prisma } from "../lib/prisma";
+import { errorResponse } from "../utils/errot.js";
+import { prisma } from "../lib/prisma.js";
 
 export const IsProjectOwner = async (req: Request, res: Response, next: NextFunction) => {
 

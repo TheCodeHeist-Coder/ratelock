@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { authMiddleware } from "../middleware/auth";
-import { createUserProjectsController, deleteProjectController, EditProjectController, getProjectsController, getProjectStatesController, getTheSpecificProjectController, rotateApiKeyController } from "../controller/projectsController";
-import { IsProjectOwner } from "../middleware/projectOwner";
+import { authMiddleware } from "../middleware/auth.js";
+import { createUserProjectsController, deleteProjectController, EditProjectController, getEventsOfRunningProjectController, getProjectsController, getProjectStatesController, getTheSpecificProjectController, rotateApiKeyController } from "../controller/projectsController.js";
+import { IsProjectOwner } from "../middleware/projectOwner.js";
 
 const router = Router();
 
@@ -34,5 +34,8 @@ router.post("/:projectId/rotate-api-key", authMiddleware, IsProjectOwner, rotate
 // to get the states of a running project
 router.get("/:projectId/states", getProjectStatesController);
 
+
+// to get the details related to the running project
+router.get("/:projectId/events", getEventsOfRunningProjectController);
 
 export default router;
