@@ -5,6 +5,7 @@ import cors from 'cors'
 import helmet from 'helmet';
 import morgan from 'morgan';
 import authRoutes from './routes/auth'
+import projectsRoutes from './routes/projects'
 
 
 const app = express();
@@ -24,7 +25,8 @@ if(process.env.NODE_ENV !== 'test') {
 
 
 //! routes
-app.use("/api/v1/auth", authRoutes)
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/projects", projectsRoutes)
 
 
 
