@@ -143,3 +143,45 @@ export const deleteProjectController = async (req: Request, res: Response) => {
     }
 
 }
+
+
+// to rotate or change the api-key
+export const rotateApiKeyController = async(req:Request, res:Response) => {
+    try {
+
+        const projectId = req.params.projectId;
+
+        const project = await prisma.project.update({
+                   where:{
+                    id: projectId as string
+                   },
+                   data: {
+                    apiKey: randomBytes(32).toString('hex')
+                   }
+        });
+
+        // not clear the cache from the old api-key project
+        
+        return res.status(200).json({ project });
+        
+    } catch (error) {
+         console.log('Error while rotating the api-key:', error);
+         return errorResponse(res, 500, 'Failed to rotate the api-key');
+    }
+}
+
+
+
+// to get the states of a running project
+export const getProjectStatesController = async(req:Request, res:Response) => {
+    try {
+
+        const projectId = req.params.projectId;
+
+        // logic for getting the states of a running project -> let's see after
+        
+    } catch (error) {
+        console.log('Error while fetching the project states:', error);
+        return errorResponse(res, 500, 'Failed to fetch the project states');
+    }
+}
