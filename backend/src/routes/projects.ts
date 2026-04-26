@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { authMiddleware } from "../middleware/auth";
-import { createUserProjectsController, getProjectsController, getTheSpecificProjectController } from "../controller/projectsController";
+import { createUserProjectsController, deleteProjectController, EditProjectController, getProjectsController, getTheSpecificProjectController } from "../controller/projectsController";
+import { IsProjectOwner } from "../middleware/projectOwner";
 
 const router = Router();
 
@@ -15,7 +16,14 @@ router.post("/", authMiddleware, createUserProjectsController);
 
 
 // to get the specific project 
-router.post("/:projectId", authMiddleware, getTheSpecificProjectController);
+router.post("/:projectId", authMiddleware, IsProjectOwner,  getTheSpecificProjectController);
 
+
+// to update or edit the project details
+router.put("/:projectId", authMiddleware, IsProjectOwner, EditProjectController);
+
+
+// to delete the project
+router.delete("/:projectId", authMiddleware, IsProjectOwner, deleteProjectController)
 
 export default router;

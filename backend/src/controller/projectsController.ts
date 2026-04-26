@@ -49,10 +49,10 @@ export const createUserProjectsController = async (req: Request, res: Response) 
 
 
     try {
-        
-        const {name, description} = req.body;
 
-        if(!name.trim()) {
+        const { name, description } = req.body;
+
+        if (!name.trim()) {
             return errorResponse(res, 400, 'Project name is required');
         }
 
@@ -71,8 +71,8 @@ export const createUserProjectsController = async (req: Request, res: Response) 
 
     } catch (error) {
         console.error('Error while creating project:', error);
-         return errorResponse(res, 500, 'Failed to create project');
-        
+        return errorResponse(res, 500, 'Failed to create project');
+
     }
 }
 
@@ -80,10 +80,66 @@ export const createUserProjectsController = async (req: Request, res: Response) 
 // logic for getting the specific project
 export const getTheSpecificProjectController = async (req: Request, res: Response) => {
 
-try {
-    
-} catch (error) {
-    
+    try {
+        const project = req.project;
+        return res.status(200).json({ project });
+    } catch (error) {
+        console.error('Error while fetching the project:', error);
+        return errorResponse(res, 500, 'Failed to fetch the project');
+    }
+
 }
+
+
+
+// to edit the project
+export const EditProjectController = async (req: Request, res: Response) => {
+
+    try {
+        const { name, description } = req.body;
+        const projectId = req.params.projectId;
+
+        const project = await prisma.project.update({
+            where: {
+                id: projectId as string
+            },
+            data: {
+                ...(name?.trim() && { name: name.trim() }),
+                ...(description?.trim() && { description: description.trim() })
+            }
+        });
+
+        return res.status(200).json({ project });
+
+    } catch (error) {
+
+        console.error('Error while updating the project:', error);
+        return errorResponse(res, 500, 'Failed to update the project');
+
+    }
+
+
+}
+
+
+
+export const deleteProjectController = async (req: Request, res: Response) => {
+
+    try {
+        const projectId = req.params.projectId;
+
+        const project = await prisma.project.delete({
+            where: {
+                id: projectId as string
+            }
+        })
+
+        // caching required to delete cache related to this project
+        return res.status(200).json({ message: 'Project deleted successfully' });
+
+    } catch (error) {
+        console.log('Error while deleting the project:', error);
+        return errorResponse(res, 500, 'Failed to delete the project');
+    }
 
 }
