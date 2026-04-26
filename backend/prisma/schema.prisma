@@ -13,14 +13,104 @@ datasource db {
   provider = "postgresql"
 }
 
+enum AlertChannel {
+  email
+  slack
+  webhook
+}
+
+enum Algorithm {
+  sliding_window
+  fixed_window
+  token_bucket
+}
 
 model User {
-  id String @id @default(uuid())
-  name String
-  email String @unique
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
   password String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
+  projects Project[]
+
+  @@map("users")
+}
+
+model Project {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  name        String
+  description String?
+  apiKey      String   @unique @default(dbgenerated("encode(gen_random_bytes(32), 'hex')")) @map("api_key")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rules  Rule[]
+  events Event[]
+  alerts Alert[]
+
+  @@index([userId])
+  @@index([apiKey])
+  @@map("projects")
+}
+
+model Rule {
+  id              String    @id @default(uuid()) @db.Uuid
+  projectId       String    @map("project_id") @db.Uuid
+  name            String
+  endpointPattern String    @default("*") @map("endpoint_pattern")
+  limitCount      Int       @default(100) @map("limit_count")
+  windowSeconds   Int       @default(60) @map("window_seconds")
+  tier            String    @default("default")
+  algorithm       Algorithm @default(sliding_window)
+  isActive        Boolean   @default(true) @map("is_active")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@map("rules")
+}
+
+model Event {
+  id         BigInt   @id @default(autoincrement())
+  projectId  String   @map("project_id") @db.Uuid
+  apiKeyUsed String   @map("api_key_used")
+  endpoint   String
+  method     String   @default("GET")
+  allowed    Boolean
+  ipAddress  String?  @map("ip_address")
+  userAgent  String?  @map("user_agent")
+  latencyMs  Int?     @map("latency_ms")
+  timestamp  DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([timestamp(sort: Desc)])
+  @@index([projectId, timestamp(sort: Desc)])
+  @@map("events")
+}
+
+model Alert {
+  id               String       @id @default(uuid()) @db.Uuid
+  projectId        String       @map("project_id") @db.Uuid
+  name             String
+  thresholdPercent Int          @default(80) @map("threshold_percent")
+  windowMinutes    Int          @default(5) @map("window_minutes")
+  channel          AlertChannel @default(email)
+  destination      String
+  isActive         Boolean      @default(true) @map("is_active")
+  lastTriggeredAt  DateTime?    @map("last_triggered_at")
+  createdAt        DateTime     @default(now()) @map("created_at")
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@map("alerts")
 }
