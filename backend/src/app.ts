@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import authRoutes from './routes/auth.js'
 import projectsRoutes from './routes/projects.js'
+import rulesRoutes from './routes/rules.js'
 
 
 const app = express();
@@ -26,7 +27,13 @@ if(process.env.NODE_ENV !== 'test') {
 
 //! routes
 app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/projects", projectsRoutes)
+
+// project routes
+app.use("/api/v1/projects", projectsRoutes);
+
+
+// rules routes
+app.use("/api/v1/rules", rulesRoutes)
 
 
 
