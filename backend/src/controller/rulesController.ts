@@ -79,7 +79,6 @@ export const createRulesController = async (req: Request, res: Response) => {
 
 
 // to edit the rules
-
 export const editRulesController = async (req: Request, res: Response) => {
     try {
 
@@ -110,5 +109,34 @@ export const editRulesController = async (req: Request, res: Response) => {
     } catch (error) {
         console.log("Error while updating rules", error);
         return errorResponse(res, 500, 'Internal server error...')
+    }
+}
+
+
+
+// to delete the rules...
+export const deleteRulesController = async (req: Request, res: Response) => {
+    try {
+        const ruleId = req.params.ruleId;
+        const projectId = req.params.projectId;
+
+        await prisma.rule.deleteMany({
+            where: {
+                id: ruleId as string,
+                projectId: projectId as string
+            }
+        });
+
+
+        // now invalidate the rules from the cache
+
+        return res.status(200).json({
+            success: true,
+            message: "Rules deleted successfully..."
+        })
+
+    } catch (error) {
+        console.log('error while deleting the rules', error);
+        return errorResponse(res, 500, 'Internale server error...')
     }
 }
