@@ -76,3 +76,39 @@ export const createRulesController = async (req: Request, res: Response) => {
         return errorResponse(res, 500, 'Internal server error...')
     }
 }
+
+
+// to edit the rules
+
+export const editRulesController = async (req: Request, res: Response) => {
+    try {
+
+        const { name, endpoint_pattern, limit_count, window_seconds, tier, algorithm, is_active } = req.body;
+        const ruleId = req.params.ruleId;
+        const projectId = req.params.projectId;
+
+        const rule = await prisma.rule.update({
+            where: {
+                id: ruleId as string,
+                projectId: projectId as string
+            },
+            data: {
+                ...(name !== undefined && { name: name.trim() }),
+                ...(endpoint_pattern !== undefined && { endpointPattern: endpoint_pattern }),
+                ...(limit_count !== undefined && { limitCount: limit_count }),
+                ...(window_seconds !== undefined && { windowSeconds: window_seconds }),
+                ...(tier !== undefined && { tier }),
+                ...(algorithm !== undefined && { algorithm }),
+                ...(is_active !== undefined && { isActive: is_active }),
+            }
+        });
+
+
+        // now invalidate the old rules from the cache
+        return res.status(200).json({ rule });
+
+    } catch (error) {
+        console.log("Error while updating rules", error);
+        return errorResponse(res, 500, 'Internal server error...')
+    }
+}
