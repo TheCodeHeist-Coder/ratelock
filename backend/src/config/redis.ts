@@ -31,7 +31,7 @@ export const SLIDING_WINDOW_SCRIPT = `
 local key = KEYS[1]
 local now = tonumber(ARGV[1])
 local window = tonumber(ARGV[2])
-local window = tonumber(ARGV[3])
+local limit = tonumber(ARGV[3])
 local request_id = ARGV[4]
 
 -- remove expired entries
