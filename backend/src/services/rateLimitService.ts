@@ -73,7 +73,7 @@ export const checkRateLimit = async(projectId: string, apiKey: string, endpoint:
 
     const now = Date.now();
     const key = `rl:${apiKey}:${matchingRule.id}`;
-    const requestId = `${now} - ${uuidv4}`;
+    const requestId = `${now} - ${uuidv4()}`;
 
 
     try {
