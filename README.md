@@ -536,7 +536,7 @@ ratelock/
 ### Prerequisites
 
 - [Docker](https://docs.docker.com/get-docker/) and Docker Compose
-- Node.js 20+ (for local development without Docker)
+- Node.js 24+ (for local development without Docker)
 
 ### With Docker (recommended)
 
@@ -661,8 +661,8 @@ RateLock is designed as a SaaS product with a freemium model:
 | Plan | Price | Projects | Requests/mo | Rules/project | Alerts |
 |------|-------|----------|-------------|---------------|--------|
 | **Free** | $0 | 1 | 50,000 | 3 | — |
-| **Pro** | $19/mo | 10 | 5,000,000 | Unlimited | 10 |
-| **Team** | $79/mo | Unlimited | Unlimited | Unlimited | Unlimited |
+| **Pro** | $15/mo | 10 | 5,000,000 | Unlimited | 10 |
+| **Team** | $72/mo | Unlimited | Unlimited | Unlimited | Unlimited |
 
 **Why this pricing works:**
 - Free tier is generous enough to prove value to indie devs
