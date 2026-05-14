@@ -41,7 +41,7 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
             return errorResponse(res, 401, 'Unauthorized');
         }
 
-        req.user = user;
+        (req as any).user = user;
         next();
 
     } catch (error) {

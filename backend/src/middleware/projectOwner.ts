@@ -7,7 +7,7 @@ export const IsProjectOwner = async (req: Request, res: Response, next: NextFunc
 
     try {
         const projectId = req.params.projectId;
-        const userId = req.user.id;
+        const userId = (req as any).user.id;
 
         if (!userId) {
             return errorResponse(res, 401, 'Unauthorized');
@@ -24,7 +24,7 @@ export const IsProjectOwner = async (req: Request, res: Response, next: NextFunc
             return errorResponse(res, 403, 'Project not found or you do not have access to this project');
         }
 
-        req.project = project;
+        (req as any).project = project;
         next();
     } catch (error) {
         console.error('Error while checking project ownership:', error);
