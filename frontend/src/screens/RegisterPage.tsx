@@ -60,6 +60,13 @@ const HeroPanel = () => (
   <div className="hidden lg:flex relative lg:w-[40%] min-h-screen bg-black flex-col overflow-hidden">
 
  
+    {/* Background decoration */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#00E6A1]/5 blur-[120px] -mr-48 -mt-48" />
+
+        {/* Background decoration */}
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#00E6A8]/5 blur-[120px] -mr-48 -mt-48" />
+      
+      
     
     <div className="absolute inset-0 z-0">
      
@@ -123,10 +130,8 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="w-full lg:w-[60%] min-h-screen bg-[#050505] flex flex-col justify-center px-8 lg:px-24 py-24 lg:py-0 lg:border-l border-white/5 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#00E6A8]/5 blur-[120px] -mr-48 -mt-48" />
-      
+    <div className="w-full lg:w-[60%] min-h-screen bg-[#000000] flex flex-col justify-center px-8 lg:px-24 py-24 lg:py-0 lg:border-l border-white/5 relative overflow-hidden">
+    
       <div className="max-w-lg w-full mx-auto space-y-10 relative z-10">
         <div className="space-y-4 text-center lg:text-left">
           <h2 className="text-4xl lg:text-4xl font-semibold font-main text-gray-300 tracking-tight">Initialize Account</h2>
