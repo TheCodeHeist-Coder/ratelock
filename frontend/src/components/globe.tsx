@@ -1,5 +1,4 @@
 
-
 import { useEffect, useRef } from "react"
 import createGlobe, { type COBEOptions } from "cobe"
 import { useMotionValue, useSpring } from "motion/react"
@@ -18,10 +17,10 @@ export const GLOBE_CONFIG: COBEOptions = {
   dark: 2,
   diffuse: 0.4,
   mapSamples: 14000,
-  mapBrightness: 1.2,
+  mapBrightness: 1,
   baseColor: [1, 1, 1],
-  markerColor: [251 / 255, 100 / 255, 21 / 255],
-  glowColor: [1, 1.8, 1],
+  markerColor: [0 / 255, 255 / 255, 179 / 255],
+  glowColor: [0.1, 0.3, 0.2],
   markers: [
     { location: [14.5995, 120.9842], size: 0.03 },
     { location: [19.076, 72.8777], size: 0.1 },

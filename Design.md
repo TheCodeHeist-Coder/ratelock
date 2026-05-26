@@ -1,172 +1,161 @@
-# Login Page
+# Landing Page
 
-Build a futuristic cyberpunk-style authentication page using React + TypeScript + Tailwind CSS.
 
-The UI should replicate a high-end AI/security dashboard aesthetic with a split-screen layout inspired by advanced sci-fi operating systems. The interface must be sleek, immersive, minimal, and visually premium.
+![alt text](<Screenshot From 2026-05-26 19-31-34.png>)
 
-TECH STACK:
+Create a futuristic AI infrastructure SaaS landing page using:
+
 - React
 - TypeScript
 - Tailwind CSS
-- Optional: Framer Motion for animations
-- Optional: Lucide React icons
-- Vite setup preferred
+- Framer Motion
 
-DESIGN STYLE:
-- Dark black background (#050505 or similar)
-- Neon green accents (#00ff9c / #00d084)
-- Futuristic hacker/cyberpunk visual language
-- Soft glowing effects
-- Glassmorphism + subtle transparency
-- Thin borders with low opacity
-- Digital terminal typography
-- Smooth transitions and hover states
-- High-tech dashboard feel
+The design should replicate a premium cyberpunk-inspired enterprise SaaS website with glowing neon green accents, dark backgrounds, animated network visuals, and modern glassmorphism UI.
 
-LAYOUT:
-Create a full-screen responsive split layout.
+STYLE & THEME:
+- Ultra-modern dark interface
+- Black and charcoal backgrounds
+- Neon green glow accents (#00ffb3)
+- Futuristic grid overlays
+- AI network aesthetics
+- Glassmorphism cards
+- Soft blur effects
+- Animated gradients
+- Enterprise fintech / edge-computing vibe
 
-LEFT SECTION (Hero Area):
-- Occupies around 60% width on desktop
-- Contains:
-  - Animated glowing orb/sphere at center
-  - Transparent mesh/grid overlays
-  - Abstract circuit-line background graphics
-  - Floating translucent UI panels/cards
-  - Heading:
-      "Access the Mesh"
-  - Small label above:
-      "IDENTITY VERIFICATION"
-  - Supporting paragraph describing distributed architecture/network sync
-  - Small status cards at bottom:
-      - LATENCY: 12ms
-      - UPTIME: 99.998%
-- Add subtle floating animation to orb
-- Add animated glowing pulse around orb
-- Add moving gradient overlays or animated particles
-- Use blur + backdrop effects for depth
+TECH STACK:
+- React + TypeScript
+- Tailwind CSS
+- Framer Motion animations
+- Responsive mobile-first design
+- Clean reusable component architecture
 
-RIGHT SECTION (Login Panel):
-- Occupies around 40% width on desktop
-- Vertically centered login form
-- Include:
-  - Logo/title "LIMITLESS"
-  - Welcome heading
-  - Subtitle:
-      "Authentication required for core access."
-  - Email input
-  - Access token/password input
-  - Recover link
-  - Checkbox:
-      "Maintain active handshake"
-  - Large glowing CTA button:
-      "INITIATE SESSION"
-  - Footer link:
-      "Join the Network"
+PAGE STRUCTURE:
 
-INPUT STYLING:
-- Dark transparent inputs
-- Thin neon borders
-- Green glow on focus
-- Smooth transitions
-- Monospace/futuristic text
-- Icons inside inputs preferred
+1. Navbar
+- Sticky transparent navbar
+- Brand logo: LIMITLESS
+- Nav links:
+  Home
+  Network
+  Documentation
+  Pricing
+- Animated hover underline
+- Small glowing status indicator
 
-BUTTON STYLING:
-- Bright neon green background
-- Black text
-- Strong hover glow
-- Scale animation on hover
-- Active pressed effect
-- Full-width button
+2. Hero Section
+- Fullscreen layout
+- Animated glowing geometric AI sphere background
+- Framer Motion fade + scale entrance animations
+- Badge:
+  “GLOBAL NETWORK 42 LIVE”
+- Main heading:
+  “Architect for Infinite Scale”
+- Highlight “Infinite” in italic neon green
+- Supporting subheading about ultra-low latency API infrastructure
+- Two CTA buttons:
+  - Get Started
+  - Documentation
+- Add animated glowing button hover effects
 
-TYPOGRAPHY:
-- Use modern futuristic fonts:
-  - Orbitron
-  - Space Grotesk
-  - JetBrains Mono
-- Large bold heading
-- Tight letter spacing
-- Uppercase labels
+3. Trusted Companies Row
+- Horizontal logo strip
+- Minimal monochrome typography
+- Companies:
+  HEXACORE
+  QUANTUM
+  NEXUS.AI
+  VORTEX
+  CYPHER
+
+4. Feature Grid
+Create responsive glassmorphism feature cards with hover animations.
+
+Cards:
+- 10ms Latency P99
+- Global Mesh
+- Smart Proxy
+- Adaptive Throttling
+
+Each card should include:
+- Neon icon
+- Short description
+- Tiny terminal/code snippet
+- Framer Motion hover lift effect
+- Border glow animation
+
+5. Integration Section
+Split layout:
+LEFT:
+- Futuristic cyber-security illustration
+- Traffic flow visualization
+- Neon arrows and blocked threats effects
+
+RIGHT:
+- Title:
+  “Zero Config Integration”
+- 3 onboarding steps:
+  1. Connect
+  2. Configure
+  3. Deploy
+- Animated JavaScript code block
+- Syntax highlighted styling
+
+6. Stats Section
+Large glowing metrics:
+- <10ms Global Latency
+- 99.99% Guaranteed Uptime
+- 1M+ Requests Per Second
+
+Use staggered Framer Motion animations.
+
+7. CTA Section
+Centered glassmorphism panel:
+- Heading:
+  “Ready to secure your future?”
+- Supporting text
+- Primary CTA:
+  “Create Developer Account”
+- Secondary link:
+  “View Pricing Plans”
+
+8. Footer
+Minimal dark footer with:
+- Documentation
+- API Status
+- Terms of Service
+- Security
 
 ANIMATIONS:
-Use Framer Motion optionally:
-- Fade-in sections
-- Floating orb movement
-- Hover animations
-- Pulsing glow effects
-- Smooth form entrance animation
-
-RESPONSIVENESS:
-- Mobile-first responsive design
-- On mobile:
-  - Stack sections vertically
-  - Hero section moves above form
-  - Reduce orb size
-  - Keep readability high
-- Ensure layout works across:
-  - Mobile
-  - Tablet
-  - Desktop
-  - Ultrawide screens
-
-ACCESSIBILITY:
-- Proper label associations
-- Keyboard navigable
-- Focus-visible states
-- Semantic HTML
-- Sufficient contrast ratios
-
-COMPONENT STRUCTURE:
-src/
- ├── components/
- │    ├── LoginForm.tsx
- │    ├── HeroSection.tsx
- │    ├── AnimatedOrb.tsx
- │    ├── StatusCard.tsx
- │    ├── BackgroundGrid.tsx
- │    └── NeonButton.tsx
- │
- ├── pages/
- │    └── LoginPage.tsx
- │
- ├── layouts/
- │    └── AuthLayout.tsx
- │
- ├── styles/
- │    └── globals.css
- │
- └── App.tsx
+Use Framer Motion extensively:
+- Fade-in on scroll
+- Staggered children animations
+- Hover scaling
+- Glow pulsing
+- Floating background particles
+- Animated gradients
+- Smooth transitions
 
 TAILWIND REQUIREMENTS:
-- Use utility-first Tailwind classes
-- Extend theme with custom neon colors
-- Add custom shadows/glows
-- Use backdrop-blur utilities
-- Use gradients and opacity overlays
-- Add custom keyframe animations in tailwind.config.ts
+- Use Tailwind utility classes only
+- Avoid inline CSS
+- Create reusable class patterns
+- Use responsive breakpoints
+- Maintain strong spacing hierarchy
 
-TAILWIND CUSTOM EXTENSIONS:
-- neon-green glow shadow
-- pulse animation
-- floating animation
-- cyber grid background
-- radial gradient utilities
+CODE QUALITY:
+- Strong TypeScript typing
+- Modular reusable components
+- Clean folder structure
+- Accessible semantic HTML
+- Production-quality UI
 
-VISUAL DETAILS:
-- Add faint scanline overlay
-- Include subtle noise texture
-- Use dim green grid lines in background
-- Add tiny system labels like:
-    "AES-256_GCM"
-    "SECURE_NODE_15"
-- Use low-opacity borders and separators
-- Include glowing divider between left and right sections
+OPTIONAL ENHANCEMENTS:
+- Three.js animated background
+- Mouse-follow glow effect
+- Animated grid overlay
+- Noise texture layer
+- Aurora gradients
+- Scroll progress indicator
 
-EXPECTED OUTPUT:
-- Production-quality React + TS code
-- Clean reusable components
-- Modern folder architecture
-- Fully responsive
-- Pixel-perfect futuristic login UI
-- Highly polished visual experience
+The final result should look like a premium billion-dollar AI infrastructure startup website with cinematic visuals and smooth interactions.
