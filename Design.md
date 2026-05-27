@@ -1,161 +1,59 @@
-# Landing Page
+# Feature section in landing page
+Create a modern futuristic dashboard section using React and Tailwind CSS.
 
+Requirements:
+- Build a responsive asymmetric grid layout with 5 cards.
+- Use a dark cyberpunk-inspired UI with subtle green neon accents.
+- Background should be nearly black (#0B0F0E) with soft gradients and glow effects.
+- Cards should have rounded corners (rounded-2xl), subtle borders, backdrop blur, and hover animations.
+- Layout (CSS Grid):
+  - Card 1 (Latency): Spans 2 columns, 1 row (top-left).
+  - Card 2 (Global Mesh): Spans 1 column, 2 rows (right side).
+  - Card 3 (Smart Proxy): Spans 1 column, 1 row (middle-left).
+  - Card 4 (Adaptive Throttling): Spans 1 column, 1 row (middle-center).
+  - Card 5 (Terminal): Spans 2 columns, 1 row (bottom-left/center).
+- Use CSS grid with responsive Tailwind classes:
+  - Desktop (lg): `grid-cols-3 grid-rows-2`
+  - Tablet (md): `grid-cols-2`
+  - Mobile: `grid-cols-1`
 
-![alt text](<Screenshot From 2026-05-26 19-31-34.png>)
+Card Styling:
+- Background: `bg-[#0B0F0E]/80` with `backdrop-blur-xl`.
+- Border: `border border-white/10 hover:border-neon-green/30`.
+- Add soft radial glow effects behind cards using absolute positioned divs.
+- Use smooth hover transitions: `transition-all duration-500 hover:-translate-y-1`.
 
-Create a futuristic AI infrastructure SaaS landing page using:
+Card Content & Specifics:
+1. **Latency Card** (Large horizontal)
+   - Big "10ms" text with `glow-text` and `text-neon-green`.
+   - Title: “10ms Latency P99”
+   - Subtitle: "Ultra-low latency at the edge."
+   - Visual: Small spark/zap icon and a "LIVE" indicator.
 
-- React
-- TypeScript
-- Tailwind CSS
-- Framer Motion
+2. **Global Mesh Card** (Tall vertical)
+   - Title: "Global Mesh"
+   - Visual: A mini globe or mesh network visualization.
+   - Status: "42 Nodes Online" with a pulsing green dot.
 
-The design should replicate a premium cyberpunk-inspired enterprise SaaS website with glowing neon green accents, dark backgrounds, animated network visuals, and modern glassmorphism UI.
+3. **Smart Proxy Card** (Square)
+   - Title: "Smart Proxy"
+   - Icon: Shield.
+   - Visual: Small status indicators (e.g., L3/L4/L7 protected).
 
-STYLE & THEME:
-- Ultra-modern dark interface
-- Black and charcoal backgrounds
-- Neon green glow accents (#00ffb3)
-- Futuristic grid overlays
-- AI network aesthetics
-- Glassmorphism cards
-- Soft blur effects
-- Animated gradients
-- Enterprise fintech / edge-computing vibe
+4. **Adaptive Throttling Card** (Square)
+   - Title: "Adaptive Throttling"
+   - Visual: A horizontal progress bar (80% full) with neon green fill.
+   - Labels: "NORMAL" vs "SURGE".
 
-TECH STACK:
-- React + TypeScript
-- Tailwind CSS
-- Framer Motion animations
-- Responsive mobile-first design
-- Clean reusable component architecture
+5. **Terminal Status Card** (Wide horizontal)
+   - Title: "System Health"
+   - Visual: Terminal-style mini panel with monospace font.
+   - Content: `> ratelock status --check` followed by success messages.
 
-PAGE STRUCTURE:
-
-1. Navbar
-- Sticky transparent navbar
-- Brand logo: LIMITLESS
-- Nav links:
-  Home
-  Network
-  Documentation
-  Pricing
-- Animated hover underline
-- Small glowing status indicator
-
-2. Hero Section
-- Fullscreen layout
-- Animated glowing geometric AI sphere background
-- Framer Motion fade + scale entrance animations
-- Badge:
-  “GLOBAL NETWORK 42 LIVE”
-- Main heading:
-  “Architect for Infinite Scale”
-- Highlight “Infinite” in italic neon green
-- Supporting subheading about ultra-low latency API infrastructure
-- Two CTA buttons:
-  - Get Started
-  - Documentation
-- Add animated glowing button hover effects
-
-3. Trusted Companies Row
-- Horizontal logo strip
-- Minimal monochrome typography
-- Companies:
-  HEXACORE
-  QUANTUM
-  NEXUS.AI
-  VORTEX
-  CYPHER
-
-4. Feature Grid
-Create responsive glassmorphism feature cards with hover animations.
-
-Cards:
-- 10ms Latency P99
-- Global Mesh
-- Smart Proxy
-- Adaptive Throttling
-
-Each card should include:
-- Neon icon
-- Short description
-- Tiny terminal/code snippet
-- Framer Motion hover lift effect
-- Border glow animation
-
-5. Integration Section
-Split layout:
-LEFT:
-- Futuristic cyber-security illustration
-- Traffic flow visualization
-- Neon arrows and blocked threats effects
-
-RIGHT:
-- Title:
-  “Zero Config Integration”
-- 3 onboarding steps:
-  1. Connect
-  2. Configure
-  3. Deploy
-- Animated JavaScript code block
-- Syntax highlighted styling
-
-6. Stats Section
-Large glowing metrics:
-- <10ms Global Latency
-- 99.99% Guaranteed Uptime
-- 1M+ Requests Per Second
-
-Use staggered Framer Motion animations.
-
-7. CTA Section
-Centered glassmorphism panel:
-- Heading:
-  “Ready to secure your future?”
-- Supporting text
-- Primary CTA:
-  “Create Developer Account”
-- Secondary link:
-  “View Pricing Plans”
-
-8. Footer
-Minimal dark footer with:
-- Documentation
-- API Status
-- Terms of Service
-- Security
-
-ANIMATIONS:
-Use Framer Motion extensively:
-- Fade-in on scroll
-- Staggered children animations
-- Hover scaling
-- Glow pulsing
-- Floating background particles
-- Animated gradients
-- Smooth transitions
-
-TAILWIND REQUIREMENTS:
-- Use Tailwind utility classes only
-- Avoid inline CSS
-- Create reusable class patterns
-- Use responsive breakpoints
-- Maintain strong spacing hierarchy
-
-CODE QUALITY:
-- Strong TypeScript typing
-- Modular reusable components
-- Clean folder structure
-- Accessible semantic HTML
-- Production-quality UI
-
-OPTIONAL ENHANCEMENTS:
-- Three.js animated background
-- Mouse-follow glow effect
-- Animated grid overlay
-- Noise texture layer
-- Aurora gradients
-- Scroll progress indicator
-
-The final result should look like a premium billion-dollar AI infrastructure startup website with cinematic visuals and smooth interactions.
+Technical Requirements:
+- Use React functional components.
+- Use Tailwind CSS utility classes.
+- Use `motion/react` for animations.
+- Use `lucide-react` or `react-icons/fi`.
+- Create a reusable `FeatureCard` component that supports `className` for grid spans.
+- Ensure the section is wrapped in a `container` with proper padding.
