@@ -1,24 +1,12 @@
 import { motion } from "motion/react";
 import { FiZap, FiShield, FiCpu, FiGlobe, FiCode, FiArrowRight } from "react-icons/fi";
 import { Navbar } from "../components/Navbar";
-import { Globe, GLOBE_CONFIG } from "../components/globe";
 import { BackgroundGrid } from "../components/BackgroundGrid";
+
 
 const HeroSection = () => (
   <section className="relative min-h-screen flex items-center justify-center pt-24 overflow-hidden">
     <BackgroundGrid />
-    <div className="absolute inset-0 z-0">
-
-      {/* Globe Container: Occupies bottom 40% of the screen height */}
-      <div className="absolute bottom-0 left-0 w-full h-[50vh] opacity-40 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[150vw] aspect-square">
-          <Globe 
-            config={{ ...GLOBE_CONFIG, width: 2000, height: 2000 }} 
-            className="w-full max-w-none" 
-          />
-        </div>
-      </div>
-    </div>
 
     <div className="relative z-10 container mx-auto px-6 mb-18 text-center">
       
@@ -63,7 +51,7 @@ const CompaniesRow = () => (
   <section className="py-12 border-y border-white/5 bg-black/50 backdrop-blur-sm relative z-10">
     <div className="container mx-auto px-6">
       <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-40 hover:opacity-100 transition-opacity duration-500">
-        {["HEXACORE", "QUANTUM", "NEXUS.AI", "VORTEX", "CYPHER"].map((company) => (
+        {["XYZ", "MYBRAND", "REPLOCART", "SHAMMY.AI", "RAJ.AI"].map((company) => (
           <span key={company} className="text-xl md:text-2xl font-bold tracking-[0.3em] text-white font-display">
             {company}
           </span>
@@ -86,12 +74,12 @@ const FeatureCard = ({
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    whileHover={{ y: -5 }}
+    whileHover={{ y: -2 }}
     className={`relative group ${className}`}
   >
     <div 
       className="absolute -inset-0.5 rounded-2xl opacity-0 group-hover:opacity-100 transition duration-500 blur-xl z-0"
-      style={{ background: glowColor }}
+      // style={{ background: glowColor }}
     />
     <div className="relative h-full glass-panel p-8 rounded-2xl border border-white/10 group-hover:border-neon-green/30 transition-colors duration-500 bg-[#0B0F0E]/80 backdrop-blur-xl overflow-hidden flex flex-col">
       {children}
@@ -347,8 +335,16 @@ const Footer = () => (
         </div>
         <p className="text-[#A1A1AA]/40 text-[10px] font-bold uppercase tracking-widest">
           &copy; 2026 RateLock Infrastructure. All rights reserved.
+          
         </p>
+       
       </div>
+
+   
+   <p className="font-special  text-gray-500  pt-4"> ❤️ RAJKUMAR </p>
+
+
+
     </div>
   </footer>
 );
