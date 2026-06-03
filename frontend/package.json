@@ -12,6 +12,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.3.0",
     "@types/date-fns": "^2.5.3",
+    "axios": "^1.16.1",
     "clsx": "^2.1.1",
     "cobe": "^0.6.4",
     "date-fns": "^4.4.0",
