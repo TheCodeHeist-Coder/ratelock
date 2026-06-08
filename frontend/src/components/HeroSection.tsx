@@ -1,46 +1,140 @@
-import React from "react";
-import { NeuralMesh } from "./NeuralMesh";
-import { MetricItem } from "./MetricItem";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { SplitText } from "gsap/all";
+import { useRef } from "react";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import { useMediaQuery } from "react-responsive";
 
-export function HeroSection() {
+gsap.registerPlugin(ScrollTrigger, SplitText);
+
+interface HeroProps {
+  /** Fade title + body copy out while the hero video scrubs on scroll */
+  fadeOnScroll?: boolean;
+}
+
+const Hero = ({ fadeOnScroll = true }: HeroProps) => {
+  const heroRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+
+  useGSAP(() => {
+    if (!heroRef.current || !titleRef.current) return;
+
+    const heroSplit = new SplitText(titleRef.current, {
+      type: "chars,words",
+    });
+
+    const paraSplit = new SplitText(".subtitle", {
+      type: "lines",
+    });
+
+    heroSplit.chars.forEach((char) => char.classList.add("hero-text-gradient"));
+
+    gsap.from(heroSplit.chars, {
+      yPercent: 100,
+      duration: 1.8,
+      ease: "expo.out",
+      stagger: 0.05,
+    });
+
+    gsap.from(paraSplit.lines, {
+      opacity: 0,
+      yPercent: 100,
+      duration: 1.2,
+      stagger: 0.08,
+      delay: 0.8,
+    });
+
+    const scrollDistance = isMobile ? "+=140%" : "+=180%";
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: heroRef.current,
+        start: "top top",
+        end: scrollDistance,
+        scrub: true,
+        pin: true,
+      },
+    });
+
+    if (fadeOnScroll && bodyRef.current) {
+      tl.to(
+        [titleRef.current, bodyRef.current],
+        {
+          autoAlpha: 0,
+          y: -28,
+          filter: "blur(6px)",
+          ease: "power2.inOut",
+          duration: 3,
+        },
+        0,
+      );
+    }
+
+    const video = videoRef.current;
+    if (video) {
+      const scrubVideo = () => {
+        tl.to(
+          video,
+          { currentTime: video.duration, ease: "none", duration: 1 },
+          0,
+        );
+      };
+
+      if (video.readyState >= 1) {
+        scrubVideo();
+      } else {
+        video.addEventListener("loadedmetadata", scrubVideo, { once: true });
+      }
+    }
+
+    return () => {
+      heroSplit.revert();
+      paraSplit.revert();
+    };
+  }, [isMobile, fadeOnScroll]);
+
   return (
-    <div className="hidden lg:flex relative lg:w-[40%] min-h-screen bg-black flex-col overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#00E6A1]/5 blur-[120px] -mr-48 -mt-48" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#00E6A8]/5 blur-[120px] -mr-48 -mt-48" />
-      
-      <div className="absolute inset-0 z-0">
-        {/* Animated Glow Lines */}
-        <div className="absolute top-0 left-0 w-full h-full">
-            <div className="absolute top-[20%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#00E6A8]/20 to-transparent animate-pulse" />
-            <div className="absolute top-0 left-[30%] w-[1px] h-full bg-gradient-to-b from-transparent via-[#00E6A8]/20 to-transparent animate-pulse delay-700" />
-        </div>
-      </div>
+    <section id="hero" ref={heroRef}>
+      <h1 ref={titleRef} className="title">
+        RateLock
+      </h1>
 
-      <div className="absolute -bottom-40 left-1/2 -translate-x-1/2 w-[120%] aspect-square z-10 pointer-events-none opacity-50">
-        <NeuralMesh />
-      </div>
+      <div ref={bodyRef} className="body">
+        <div className="content">
+          <div className="hero-left hidden md:block">
+            <p className="hero-label">Architect for Infinite Scale</p>
+            <p className="subtitle hero-tagline">
+              Created by
+              <span>RajKumar</span>
+            </p>
+          </div>
 
-      {/* Content Layer */}
-      <div className="relative z-20 flex flex-col h-[80%] justify-center px-8 lg:px-20 py-24 lg:py-0">
-        <div className="flex flex-col gap-10">
-          <h1 className="text-5xl lg:text-6xl font-semibold text-white font-main leading-[1.05] tracking-wide max-w-xl">
-            Secure Your <br />
-            <span className="text-[#00E6A8]">Digital</span> Core.
-          </h1>
+          <div className="view-content">
+            <p className="subtitle hero-description">
+              Deploy mission-critical rate limiting and traffic orchestration at
+              the edge. Engineered for the next generation of high-availability
+              AI infrastructure.
+            </p>
 
-          <p className="text-[#c1c1c4] text-base leading-relaxed max-w-[420px]">
-            Synchronize your credentials with the distributed mesh. 
-            Real-time neural handshake required for high-security node access.
-          </p>
-
-          <div className="flex flex-wrap gap-10 mt-4">
-            <MetricItem value="12ms" label="Avg Latency" />
-            <MetricItem value="99.998%" label="Node Uptime" />
-            <MetricItem value="TLS 1.3" label="Auth Protocol" />
+            <a href="#get-started">Get Started →</a>
           </div>
         </div>
       </div>
-    </div>
+
+      <div className="hero-video">
+        <video
+          ref={videoRef}
+          src="/output.mp4"
+          muted
+          playsInline
+          preload="auto"
+        />
+      </div>
+    </section>
   );
-}
+};
+
+export default Hero;

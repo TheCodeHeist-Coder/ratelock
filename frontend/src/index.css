@@ -1,64 +1,220 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Chokokutai&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+/* ─── Fonts (matching old cocktail project) ─── */
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@300;400;700&display=swap');
+/* Tech fonts kept for nav / utility text */
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@300;400;700&display=swap");
+
 @import "tailwindcss";
 
-@theme {
-  --font-display: "Orbitron", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
-  --font-sans: "Space Grotesk", sans-serif;
-   --font-main:"Noto Sans", sans-serif;
-   --font-special: "Chokokutai", system-ui;
+/* ─── Custom font: Modern Negra (same as old project) ─── */
+@font-face {
+  font-family: "Modern Negra";
+  src: url("/fonts/Modern Negra Demo.ttf") format("truetype");
+}
 
+@theme {
+  /* ── Old project fonts ── */
+  --font-sans: "Mona Sans", sans-serif;
+  --font-modern-negra: "Modern Negra", sans-serif;
+  --font-serif: "DM Serif Text", serif;
+
+  /* ── Tech fonts for nav/code elements ── */
+  --font-display: "Orbitron", sans-serif;
+  --font-main: "Space Grotesk", sans-serif;
+  --font-special: "Orbitron", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* ── Colors ── */
   --color-neon-green: #00ff9c;
   --color-neon-green-dim: #00d084;
   --color-cyber-black: #050505;
+  --color-muted: #a1a1aa;
 
+  /* ── Animations ── */
   @keyframes float {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    50%       { transform: translateY(-10px); }
   }
-
   @keyframes scanline {
-    0% { transform: translateY(-100%); }
+    0%   { transform: translateY(-100%); }
     100% { transform: translateY(100%); }
   }
-
   @keyframes pulse-glow {
     0%, 100% { opacity: 0.5; }
-    50% { opacity: 0.8; }
+    50%       { opacity: 0.8; }
   }
 
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-scanline: scanline 8s linear infinite;
+  --animate-float:      float 6s ease-in-out infinite;
+  --animate-scanline:   scanline 8s linear infinite;
   --animate-pulse-glow: pulse-glow 4s ease-in-out infinite;
 }
 
-@layer base {
-  body {
-    @apply bg-cyber-black text-white selection:bg-neon-green selection:text-black font-sans;
-  }
+/* ─── Base ─── */
+html,
+body {
+  width: 100%;
+  background-color: black;
+  color: white;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+body::-webkit-scrollbar {
+  display: none;
 }
 
-@layer utilities {
-  .glow-border {
-    border: 1px solid rgba(0, 255, 156, 0.2);
-    box-shadow: 0 0 15px rgba(0, 255, 156, 0.1);
+/* ─── Utilities ─── */
+@utility flex-center {
+  @apply flex justify-center items-center;
+}
+
+@utility col-center {
+  @apply flex flex-col justify-center items-center;
+}
+
+@utility abs-center {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+}
+
+/* GSAP adds this class to every split char of .hero-title */
+@utility hero-text-gradient {
+  background: linear-gradient(180deg, #ffffff 0%, #00ff9c 45%, #00d084 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility radial-gradient {
+  background: radial-gradient(
+    circle at center,
+    #434343 0%,
+    #000 50%,
+    transparent 100%
+  );
+}
+
+@utility glow-text {
+  text-shadow: 0 0 10px rgba(0, 255, 156, 0.5);
+}
+
+@utility glow-border {
+  border: 1px solid rgba(0, 255, 156, 0.2);
+  box-shadow: 0 0 15px rgba(0, 255, 156, 0.1);
+}
+
+@utility cyber-grid {
+  background-image:
+    linear-gradient(rgba(0, 255, 156, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 156, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+@utility glass-panel {
+  background-color: rgb(255 255 255 / 0.05);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgb(255 255 255 / 0.1);
+}
+
+/* ─── Components ─── */
+@layer components {
+  main {
+    @apply w-full overflow-x-hidden;
   }
 
-  .glow-text {
-    text-shadow: 0 0 10px rgba(0, 255, 156, 0.5);
+  /* ── Nav ── */
+  nav {
+    @apply fixed z-50 w-full;
+
+    div {
+      @apply flex md:flex-row flex-col md:justify-between items-center gap-5 py-5 lg:px-20 px-5 container mx-auto;
+    }
+
+    a {
+      @apply cursor-pointer text-nowrap md:text-base text-sm;
+    }
+
+    ul {
+      @apply flex items-center justify-center gap-7 lg:gap-12;
+    }
   }
 
-  .cyber-grid {
-    background-image: 
-      linear-gradient(rgba(0, 255, 156, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 255, 156, 0.05) 1px, transparent 1px);
-    background-size: 50px 50px;
+  /* ── Noise overlay — applied directly on #hero ── */
+  .noisy {
+    background-image: url("/noise.png");
   }
 
-  .glass-panel {
-    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  /* ══════════════════════════════════════════════
+     HERO — exact port of old project #hero styles
+     with RateLock content swapped in
+  ══════════════════════════════════════════════ */
+  #hero {
+    @apply relative z-10 min-h-dvh w-full overflow-hidden bg-black font-sans;
+
+    /* Readability overlays */
+    &::before {
+      content: "";
+      @apply pointer-events-none absolute inset-0 z-10 bg-gradient-to-b from-black via-black/60 to-transparent;
+    }
+
+    &::after {
+      content: "";
+      @apply pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/2 bg-gradient-to-t from-black via-black/50 to-transparent;
+    }
+
+    /* ── Background video — behind everything ── */
+    .hero-video {
+      @apply absolute inset-x-0 bottom-0 z-0 h-[55%] md:h-[78%];
+    }
+
+    video {
+      @apply h-full w-full object-cover object-bottom opacity-90 md:object-contain;
+    }
+
+    /* ── Giant centered title ── */
+    h1.title {
+      /* overflow hidden per-char so GSAP yPercent clip works */
+      @apply relative z-20 mt-36 text-center font-display text-5xl font-bold leading-none tracking-tight md:mt-28 md:text-7xl lg:text-[11vw];
+      overflow: hidden;
+      filter: drop-shadow(0 0 32px rgba(0, 255, 156, 0.35));
+    }
+
+    /* ── Bottom body block ── */
+    .body {
+      @apply absolute inset-x-0 bottom-8 z-20 mx-auto w-full px-6 md:bottom-14 lg:bottom-20;
+
+      .content {
+        @apply container mx-auto flex w-full flex-col items-start justify-between gap-10 lg:flex-row lg:items-end;
+
+        /* Left block — label + creator tagline */
+        .hero-left {
+          @apply flex w-full flex-col gap-4 lg:max-w-sm;
+
+          .hero-label {
+            @apply font-mono text-[10px] font-bold uppercase tracking-[0.3em] text-muted;
+          }
+
+          .hero-tagline {
+            @apply font-main text-3xl font-bold leading-tight text-white md:text-4xl lg:text-5xl;
+
+            span {
+              @apply mt-1 block text-neon-green;
+              text-shadow: 0 0 10px rgba(0, 255, 156, 0.5);
+            }
+          }
+        }
+
+        /* Right block — description + CTA */
+        .view-content {
+          @apply w-full space-y-7 md:max-w-md lg:max-w-lg;
+
+          .hero-description {
+            @apply text-left font-main text-base leading-relaxed text-muted md:text-lg;
+          }
+
+          a {
+            @apply inline-flex items-center gap-2 font-display text-sm font-bold uppercase tracking-[0.2em] text-neon-green transition-colors hover:text-white;
+          }
+        }
+      }
+    }
   }
 }
