@@ -1,8 +1,8 @@
 import { useGSAP } from "@gsap/react"
-import { navLinks } from "../../constants"
+
 import gsap from "gsap"
 
-
+const navLinks = ["Experts", "Community Groups", "Support"];
 const Navbar = () => {
     useGSAP( ()=> {
         const navTween = gsap.timeline({
@@ -28,10 +28,10 @@ const Navbar = () => {
         </a>
 
         <ul>
-            {navLinks.map((link) => (
-                <li key={link.id}>
-                    <a href={`#${link.id}`}>
-                        {link.title}
+            {navLinks.map((id) => (
+                <li key={id}>
+                    <a href={`#home`}>
+                        {navLinks}
                     </a>
                 </li>
             ))}

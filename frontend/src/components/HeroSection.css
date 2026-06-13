@@ -1,0 +1,131 @@
+/* ============================================================
+   HeroSection.css — Dark mode styles & custom utilities
+   ============================================================ */
+
+/* Smooth background transition on root wrapper */
+.dark {
+  color-scheme: dark;
+}
+
+/* Hero illustration — darkened + desaturated in dark mode */
+.hero-illustration-dark {
+  filter: brightness(0.6) saturate(0.7);
+  mix-blend-mode: luminosity;
+}
+
+/* Gradient glow button — slightly brighter glow in dark mode */
+.dark .group:hover .gradient-glow {
+  opacity: 1;
+}
+
+/* Scrollbar styling for dark mode */
+.dark ::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #111827; /* gray-900 */
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background-color: #374151; /* gray-700 */
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: #4b5563; /* gray-600 */
+}
+
+/* Focus ring offset color fix in dark mode (Tailwind's ring-offset uses bg color) */
+.dark .focus\:ring-offset-gray-950:focus {
+  --tw-ring-offset-color: #030712;
+}
+
+/* Dark mode mobile menu dropdown animation */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dark nav,
+nav {
+  animation: slideDown 0.18s ease-out;
+}
+
+/* Badge / pill tag — softer glow border in dark mode */
+.dark .badge-pill {
+  border-color: rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+/* Tilt animation for gradient glow behind CTA button */
+@keyframes tilt {
+  0%,
+  50%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(0.5deg);
+  }
+  75% {
+    transform: rotate(-0.5deg);
+  }
+}
+
+.animate-tilt {
+  animation: tilt 10s infinite linear;
+}
+
+/* Logo invert transition */
+img.invert {
+  transition: filter 0.3s ease;
+}
+
+/* ============================================================
+   Stats Section
+   ============================================================ */
+
+/* Neon glow on stat numbers — dark mode */
+.stat-glow-dark {
+  text-shadow:
+    0 0 20px rgba(74, 222, 128, 0.6),
+    0 0 40px rgba(74, 222, 128, 0.3);
+}
+
+/* Subtle glow — light mode */
+.stat-glow-light {
+  text-shadow:
+    0 0 12px rgba(22, 163, 74, 0.25);
+}
+
+/* Fade-in animation for stat cards */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.stat-card {
+  animation: fadeInUp 0.5s ease-out both;
+}
+
+/* ============================================================
+   Global smooth transition baseline
+   ============================================================ */
+*, *::before, *::after {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
