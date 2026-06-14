@@ -219,7 +219,7 @@ export default function HeroSection({ darkMode }) {
             className={`object-cover object-top w-full h-auto mx-auto scale-150 xl:scale-100 transition-all duration-300 ${
               darkMode ? "hero-illustration-dark" : ""
             }`}
-            src="https://chatgpt.com/backend-api/estuary/content?id=file_00000000ad1871fab86112339038f9f1&ts=494827&p=fs&cid=1&sig=4d11f1238d7d0192da55418f4b35ee60fcc10ebfd01c46947fd069ede78bdfb3&v=0"
+            src="https://d33wubrfki0l68.cloudfront.net/54780decfb9574945bc873b582cdc6156144a2ba/d9fa1/images/hero/4/illustration.png"
             alt="Hero illustration"
           />
         </div>
