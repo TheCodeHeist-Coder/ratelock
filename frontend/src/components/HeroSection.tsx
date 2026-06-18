@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   FiArrowRight,
@@ -15,6 +15,15 @@ export default function HeroSection() {
   // Site is dark-only now — the light/dark toggle was removed.
   const darkMode = true;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Glass effect once the page is scrolled past the top.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   const navLinks = ["Features", "Docs", "Pricing"];
 
   return (
@@ -48,20 +57,24 @@ export default function HeroSection() {
         />
       </div>
 
-      {/* ── Header ── */}
-      <header className="relative z-20 py-5">
+      {/* ── Header (fixed / sticky across the page) ── */}
+      <header
+        className={`fixed inset-x-0 top-0 z-50 py-4 transition-all duration-300 ${
+          scrolled || mobileMenuOpen
+            ? "border-b border-white/10 bg-black/60 backdrop-blur-xl"
+            : "border-b border-transparent bg-transparent"
+        }`}
+      >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#00E6A8] text-black shadow-[0_0_18px_rgba(0,230,168,0.45)]">
-              <FiShield size={18} />
-            </span>
-            <span
-              className={`text-lg font-bold tracking-tight ${
-                darkMode ? "text-white" : "text-gray-900"
-              }`}
-            >
-              Rate<span className="text-[#00b873]">Lock</span>
+          <Link to="/" className="group flex items-center gap-2.5">
+            <img
+              src="/logo.png"
+              alt="RateLock"
+              className="h-9 w-9 rounded-lg object-contain transition-transform duration-300 group-hover:scale-105"
+            />
+            <span className="font-special text-lg font-bold uppercase tracking-[0.25em] text-white">
+              Rate<span className="text-[#00E6A8]">Lock</span>
             </span>
           </Link>
 
@@ -147,7 +160,7 @@ export default function HeroSection() {
       </header>
 
       {/* ── Hero ── */}
-      <section className="relative z-10 px-4 pb-24 pt-14 sm:px-6 lg:px-8 lg:pt-20">
+      <section className="relative z-10 px-4 pb-24 pt-28 sm:px-6 lg:px-8 lg:pt-36">
         <div className="mx-auto max-w-3xl text-center">
           {/* Announcement pill */}
           <div
