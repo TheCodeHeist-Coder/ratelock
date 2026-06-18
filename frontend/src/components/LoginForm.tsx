@@ -1,18 +1,30 @@
 import React, { useState } from "react";
-import { FiGithub, FiZap, FiMail, FiLock, FiChevronRight } from "react-icons/fi";
+import { FiGithub } from "react-icons/fi";
 import { FaGoogle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SocialButton } from "./SocialButton";
+import { useAuthStore } from "../stores/authStore";
 
 export function LoginForm() {
+  const navigate = useNavigate();
+  const login = useAuthStore((s) => s.login);
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState('demo@ratelimity.dev');
-  const [password, setPassword] = useState('demo1234');
+  const [error, setError] = useState<string | null>(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     setLoading(true);
-    setTimeout(() => setLoading(false), 2000);
+    try {
+      await login(email, password);
+      navigate('/dashboard');
+    } catch (err: any) {
+      setError(err?.response?.data?.error ?? err?.response?.data?.message ?? 'Authentication failed. Check your credentials.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -53,8 +65,14 @@ export function LoginForm() {
             />
           </div>
 
-          <button 
-            type="submit" 
+          {error && (
+            <p className="text-[12px] text-red-400 bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3">
+              {error}
+            </p>
+          )}
+
+          <button
+            type="submit"
             disabled={loading}
             className="w-full bg-[#00E6A8] text-black font-bold text-[11px] py-5 rounded-xl uppercase tracking-[0.3em] transition-all duration-200 disabled:opacity-50 cursor-pointer shadow-[0_0_20px_rgba(0,230,168,0.2)] hover:shadow-[0_0_20px_rgba(0,230,168,0.4)] transform hover:-translate-y-0.5"
           >

@@ -3,10 +3,12 @@ import { authMiddleware } from "../middleware/auth.js";
 import { IsProjectOwner } from "../middleware/projectOwner.js";
 import { createRulesController, deleteRulesController, editRulesController, getAllRulesController } from "../controller/rulesController.js";
 
-const router = Router();
+// mergeParams lets this router read :projectId from the parent mount
+// (app mounts it at /api/v1/projects/:projectId/rules)
+const router = Router({ mergeParams: true });
 
 
-// to get all rules 
+// to get all rules
 router.get("/",authMiddleware, IsProjectOwner,  getAllRulesController);
 
 // to create the rules

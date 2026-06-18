@@ -1,10 +1,9 @@
-import React from "react";
 import { FiCode, FiZap } from "react-icons/fi";
 
 /* ─────────────────────────────────────────────
    CompaniesRow
 ───────────────────────────────────────────── */
-export const CompaniesRow = ({ darkMode }) => (
+export const CompaniesRow = ({ darkMode }: { darkMode: boolean }) => (
   <section
     className={`py-12 border-y relative z-10 transition-colors duration-300 ${
       darkMode
@@ -36,7 +35,7 @@ export const CompaniesRow = ({ darkMode }) => (
 /* ─────────────────────────────────────────────
    IntegrationSection
 ───────────────────────────────────────────── */
-export const IntegrationSection = ({ darkMode }) => (
+export const IntegrationSection = ({ darkMode }: { darkMode: boolean }) => (
   <section
     className={`py-24 transition-colors duration-300 ${
       darkMode ? "bg-black/50" : "bg-white"
@@ -149,7 +148,7 @@ await limiter.secure(req, res);`}</code>
 /* ─────────────────────────────────────────────
    StatsSection
 ───────────────────────────────────────────── */
-export const StatsSection = ({ darkMode }) => (
+export const StatsSection = ({ darkMode }: { darkMode: boolean }) => (
   <section
     className={`py-24 relative overflow-hidden transition-colors duration-300 ${
       darkMode ? "bg-black" : "bg-gray-50"
@@ -205,7 +204,7 @@ export const StatsSection = ({ darkMode }) => (
 /* ─────────────────────────────────────────────
    CTASection
 ───────────────────────────────────────────── */
-export const CTASection = ({ darkMode }) => (
+export const CTASection = ({ darkMode }: { darkMode: boolean }) => (
   <section
     className={`py-24 transition-colors duration-300 ${
       darkMode ? "bg-black" : "bg-white"
@@ -273,7 +272,7 @@ export const CTASection = ({ darkMode }) => (
 /* ─────────────────────────────────────────────
    Footer
 ───────────────────────────────────────────── */
-export const Footer = ({ darkMode }) => (
+export const Footer = ({ darkMode }: { darkMode: boolean }) => (
   <footer
     className={`py-12 border-t transition-colors duration-300 ${
       darkMode ? "border-white/5 bg-black" : "border-gray-200 bg-gray-50"

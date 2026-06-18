@@ -58,9 +58,9 @@ export const createRulesController = async (req: Request, res: Response) => {
         const rule = await prisma.rule.create({
             data: {
                 name,
-                endpoint_pattern,
-                limit_count,
-                window_seconds,
+                endpointPattern: endpoint_pattern,
+                limitCount: limit_count,
+                windowSeconds: window_seconds,
                 tier,
                 algorithm,
                 projectId: projectId as string

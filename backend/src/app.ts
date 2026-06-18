@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import authRoutes from './routes/auth.js'
 import projectsRoutes from './routes/projects.js'
 import rulesRoutes from './routes/rules.js'
+import alertsRoutes from './routes/alerts.js'
 
 
 const app = express();
@@ -31,9 +32,10 @@ app.use("/api/v1/auth", authRoutes);
 // project routes
 app.use("/api/v1/projects", projectsRoutes);
 
-
-// rules routes
-app.use("/api/v1/rules", rulesRoutes)
+// rules + alerts are scoped to a project, so they nest under it
+// (their routers use mergeParams to read :projectId)
+app.use("/api/v1/projects/:projectId/rules", rulesRoutes);
+app.use("/api/v1/projects/:projectId/alerts", alertsRoutes);
 
 
 
