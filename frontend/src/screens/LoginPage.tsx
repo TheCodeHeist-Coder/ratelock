@@ -48,7 +48,7 @@ const HeroPanel = () => (
 export default function LoginPage() {
   return (
     <div className="min-h-screen bg-black flex flex-col lg:flex-row relative selection:bg-[#00E6A8] selection:text-black font-sans antialiased overflow-x-hidden">
-      <Navbar />
+      <Navbar minimal />
       <HeroPanel />
       <LoginForm />
     </div>
