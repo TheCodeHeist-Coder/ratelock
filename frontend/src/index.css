@@ -150,22 +150,8 @@ body::-webkit-scrollbar {
     @apply w-full overflow-x-hidden;
   }
 
-  /* ── Nav ── */
-  nav {
-    @apply fixed z-50 w-full;
-
-    div {
-      @apply flex md:flex-row flex-col md:justify-between items-center gap-5 py-5 lg:px-20 px-5 container mx-auto;
-    }
-
-    a {
-      @apply cursor-pointer text-nowrap md:text-base text-sm;
-    }
-
-    ul {
-      @apply flex items-center justify-center gap-7 lg:gap-12;
-    }
-  }
+  /* Nav is now styled per-component (see Navbar.tsx / HeroSection header)
+     so global <nav> element rules are intentionally not defined here. */
 
   /* ── Noise overlay — applied directly on #hero ── */
   .noisy {

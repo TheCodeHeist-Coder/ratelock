@@ -1,9 +1,12 @@
 import { FiCode, FiZap } from "react-icons/fi";
 
+// Site is dark-only now — the light/dark toggle was removed.
+const darkMode = true;
+
 /* ─────────────────────────────────────────────
    CompaniesRow
 ───────────────────────────────────────────── */
-export const CompaniesRow = ({ darkMode }: { darkMode: boolean }) => (
+export const CompaniesRow = () => (
   <section
     className={`py-12 border-y relative z-10 transition-colors duration-300 ${
       darkMode
@@ -35,7 +38,7 @@ export const CompaniesRow = ({ darkMode }: { darkMode: boolean }) => (
 /* ─────────────────────────────────────────────
    IntegrationSection
 ───────────────────────────────────────────── */
-export const IntegrationSection = ({ darkMode }: { darkMode: boolean }) => (
+export const IntegrationSection = () => (
   <section
     className={`py-24 transition-colors duration-300 ${
       darkMode ? "bg-black/50" : "bg-white"
@@ -148,7 +151,7 @@ await limiter.secure(req, res);`}</code>
 /* ─────────────────────────────────────────────
    StatsSection
 ───────────────────────────────────────────── */
-export const StatsSection = ({ darkMode }: { darkMode: boolean }) => (
+export const StatsSection = () => (
   <section
     className={`py-24 relative overflow-hidden transition-colors duration-300 ${
       darkMode ? "bg-black" : "bg-gray-50"
@@ -204,7 +207,7 @@ export const StatsSection = ({ darkMode }: { darkMode: boolean }) => (
 /* ─────────────────────────────────────────────
    CTASection
 ───────────────────────────────────────────── */
-export const CTASection = ({ darkMode }: { darkMode: boolean }) => (
+export const CTASection = () => (
   <section
     className={`py-24 transition-colors duration-300 ${
       darkMode ? "bg-black" : "bg-white"
@@ -272,7 +275,7 @@ export const CTASection = ({ darkMode }: { darkMode: boolean }) => (
 /* ─────────────────────────────────────────────
    Footer
 ───────────────────────────────────────────── */
-export const Footer = ({ darkMode }: { darkMode: boolean }) => (
+export const Footer = () => (
   <footer
     className={`py-12 border-t transition-colors duration-300 ${
       darkMode ? "border-white/5 bg-black" : "border-gray-200 bg-gray-50"
