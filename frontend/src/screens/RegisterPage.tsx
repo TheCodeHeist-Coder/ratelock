@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { FiGithub, FiZap, FiLayers } from "react-icons/fi";
+import { FiGithub, FiLayers } from "react-icons/fi";
 import { FaGoogle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Globe , GLOBE_CONFIG} from "../components/globe";
 import { Navbar } from "../components/Navbar";
 import { MetricItem } from "../components/MetricItem";
 import { SocialButton } from "../components/SocialButton";
+import { useAuthStore } from "../stores/authStore";
 
 // --- Components ---
 
@@ -67,12 +68,30 @@ const HeroPanel = () => (
 );
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
+  const register = useAuthStore((s) => s.register);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
     setLoading(true);
-    setTimeout(() => setLoading(false), 2000);
+    try {
+      await register(name, email, password);
+      navigate("/dashboard");
+    } catch (err: any) {
+      setError(err?.response?.data?.error ?? err?.response?.data?.message ?? "Could not create account. Try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -90,30 +109,36 @@ const RegisterForm = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <label className="text-[10px] font-bold text-[#A1A1AA] uppercase tracking-[0.2em] ml-1">Your Name</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               placeholder="Dev raaz"
               className="w-full bg-[#111] border border-white/10 rounded-xl px-4 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-[#003c2c]  transition-all text-sm shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               required
             />
           </div>
 
           <div className="space-y-2">
             <label className="text-[10px] font-bold text-[#A1A1AA] uppercase tracking-[0.2em] ml-1">Your Email</label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               placeholder="raaz@tach.com"
               className="w-full bg-[#111] border border-white/10 rounded-xl px-4 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-[#003c2c]  transition-all text-sm shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
 
           <div className="space-y-2">
             <label className="text-[10px] font-bold text-[#A1A1AA] uppercase tracking-[0.2em] ml-1">Access Token (Password)</label>
-            <input 
-              type="password" 
+            <input
+              type="password"
               placeholder="••••••••••••••••"
               className="w-full bg-[#111] border border-white/10 rounded-xl px-4 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-[#003c2c]  transition-all text-sm shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
             <div className="flex items-center gap-2 mt-2 ml-1">
@@ -124,8 +149,14 @@ const RegisterForm = () => {
             </div>
           </div>
 
-          <button 
-            type="submit" 
+          {error && (
+            <p className="text-[12px] text-red-400 bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3">
+              {error}
+            </p>
+          )}
+
+          <button
+            type="submit"
             disabled={loading}
             className="w-full bg-[#00E6A8] text-black font-bold text-[11px] py-5 rounded-xl uppercase tracking-[0.3em] transition-all duration-200 disabled:opacity-50 cursor-pointer shadow-[0_0_20px_rgba(0,230,168,0.2)] hover:shadow-[0_0_20px_rgba(0,230,168,0.4)] transform hover:-translate-y-0.5"
           >

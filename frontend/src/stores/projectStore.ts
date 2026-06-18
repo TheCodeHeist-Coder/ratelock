@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Alert, DashboardStats, Project, Rule } from "../types";
+import type { Alert, DashboardStats, Event, Project, Rule } from "../types";
 import { api } from "../lib/api";
 
 
@@ -17,7 +17,9 @@ interface ProjectState {
 
     // projects
     fetchProjects: () => Promise<void>;
+    fetchProject: (id: string) => Promise<Project | null>;
     createProject: (name: string, description?: string) => Promise<Project>;
+    updateProject: (id: string, data: { name?: string; description?: string }) => Promise<void>;
     deleteProject: (id: string) => Promise<void>;
     setActiveProject: (p: Project | null) => void;
     rotateKey: (id: string) => Promise<void>;
@@ -59,10 +61,30 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
         set({ projects: data.projects, loading: false });
     },
 
+    fetchProject: async (id) => {
+        // backend exposes the single-project read as POST /projects/:id
+        const { data } = await api.post(`/projects/${id}`);
+        set((s) => ({
+            activeProject: data.project,
+            projects: s.projects.some((p) => p.id === id)
+                ? s.projects.map((p) => (p.id === id ? { ...p, ...data.project } : p))
+                : s.projects,
+        }));
+        return data.project;
+    },
+
     createProject: async (name, description) => {
         const { data } = await api.post('/projects', { name, description });
         set((s) => ({ projects: [data.project, ...s.projects] }));
         return data.project;
+    },
+
+    updateProject: async (id, body) => {
+        const { data } = await api.put(`/projects/${id}`, body);
+        set((s) => ({
+            projects: s.projects.map((p) => (p.id === id ? { ...p, ...data.project } : p)),
+            activeProject: s.activeProject?.id === id ? { ...s.activeProject, ...data.project } : s.activeProject,
+        }));
     },
 
     deleteProject: async (id) => {
@@ -76,7 +98,7 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     setActiveProject: (p) => set({ activeProject: p, rules: [], alerts: [], stats: null, events: [] }),
 
     rotateKey: async (id) => {
-        const { data } = await api.post(`/projects/${id}/rotate-key`);
+        const { data } = await api.post(`/projects/${id}/rotate-api-key`);
         set((s) => ({
             projects: s.projects.map((p) => (p.id === id ? data.project : p)),
             activeProject: s.activeProject?.id === id ? data.project : s.activeProject,
@@ -101,7 +123,7 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     },
 
     updateRule: async (projectId, ruleId, rule) => {
-        const { data } = await api.patch(`/projects/${projectId}/rules/${ruleId}`, {
+        const { data } = await api.put(`/projects/${projectId}/rules/${ruleId}`, {
             name: rule.name,
             endpoint_pattern: rule.endpointPattern,
             limit_count: rule.limitCount,
@@ -153,13 +175,22 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
 
     fetchStats: async (projectId, hours) => {
         const h = hours ?? get().statsHours;
-        const { data } = await api.get(`/projects/${projectId}/stats?hours=${h}`);
-        set({ stats: data.stats });
+        // backend route is /states (analytics controller is still a stub → tolerate empty)
+        try {
+            const { data } = await api.get(`/projects/${projectId}/states?hours=${h}`);
+            set({ stats: data?.stats ?? null });
+        } catch {
+            set({ stats: null });
+        }
     },
 
     fetchEvents: async (projectId) => {
-        const { data } = await api.get(`/projects/${projectId}/events?limit=100`);
-        set({ events: data.events });
+        try {
+            const { data } = await api.get(`/projects/${projectId}/events?limit=100`);
+            set({ events: data?.events ?? [] });
+        } catch {
+            set({ events: [] });
+        }
     },
 
     setStatsHours: (h) => set({ statsHours: h }),

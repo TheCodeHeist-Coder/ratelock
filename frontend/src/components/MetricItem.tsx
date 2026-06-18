@@ -1,4 +1,3 @@
-import React from "react";
 
 export const MetricItem = ({ value, label }: { value: string; label: string }) => (
   <div className="flex flex-col gap-1">

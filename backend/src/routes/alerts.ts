@@ -3,7 +3,9 @@ import { authMiddleware } from "../middleware/auth.js";
 import { IsProjectOwner } from "../middleware/projectOwner.js";
 import { CreateprojectAlertsController, deleteProjectAlertsController, getProjectAlertsController, updateProjectAlertsController } from "../controller/alertsController.js";
 
-const router = Router();
+// mergeParams lets this router read :projectId from the parent mount
+// (app mounts it at /api/v1/projects/:projectId/alerts)
+const router = Router({ mergeParams: true });
 
 
 router.get('/', authMiddleware, IsProjectOwner, getProjectAlertsController)
@@ -12,7 +14,7 @@ router.post('/', authMiddleware, IsProjectOwner, CreateprojectAlertsController)
 
 router.patch('/:alertId', authMiddleware, IsProjectOwner, updateProjectAlertsController)
 
-router.patch('/:alertId', authMiddleware, IsProjectOwner, deleteProjectAlertsController)
+router.delete('/:alertId', authMiddleware, IsProjectOwner, deleteProjectAlertsController)
 
 
 

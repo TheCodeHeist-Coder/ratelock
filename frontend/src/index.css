@@ -30,6 +30,26 @@
   --color-cyber-black: #050505;
   --color-muted: #a1a1aa;
 
+  /* ── Dashboard / app theme (matches login + register neon aesthetic) ── */
+  /* brand — the #00E6A8 neon-green accent ramp used across auth pages */
+  --color-brand-300: #5cf2c8;
+  --color-brand-400: #00e6a8;
+  --color-brand-500: #00d084;
+  --color-brand-600: #00b873;
+  --color-brand-700: #059669;
+  --color-brand-800: #065f46;
+  --color-brand-900: #052e22;
+
+  /* ink — neutral surface + text ramp (zinc-like, tuned dark) */
+  --color-ink-200: #e4e4e7;
+  --color-ink-300: #d4d4d8;
+  --color-ink-400: #a1a1aa;
+  --color-ink-500: #71717a;
+  --color-ink-600: #52525b;
+  --color-ink-700: #27272a;
+  --color-ink-800: #18181b;
+  --color-ink-900: #0b0b0d;
+
   /* ── Animations ── */
   @keyframes float {
     0%, 100% { transform: translateY(0); }
@@ -43,10 +63,20 @@
     0%, 100% { opacity: 0.5; }
     50%       { opacity: 0.8; }
   }
+  @keyframes slide-up {
+    0%   { opacity: 0; transform: translateY(8px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    0%   { opacity: 0; }
+    100% { opacity: 1; }
+  }
 
   --animate-float:      float 6s ease-in-out infinite;
   --animate-scanline:   scanline 8s linear infinite;
   --animate-pulse-glow: pulse-glow 4s ease-in-out infinite;
+  --animate-slide-up:   slide-up 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-fade-in:    fade-in 0.4s ease-out;
 }
 
 /* ─── Base ─── */
@@ -216,5 +246,78 @@ body::-webkit-scrollbar {
         }
       }
     }
+  }
+
+  /* ══════════════════════════════════════════════
+     DASHBOARD / APP UI PRIMITIVES
+     Neon-green on black — same language as the
+     login + register pages (#00E6A8 accent).
+  ══════════════════════════════════════════════ */
+
+  .card {
+    @apply rounded-2xl border border-ink-700 bg-ink-900/70 backdrop-blur-xl;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-brand-400 px-4 py-2.5
+           text-sm font-bold text-black transition-all duration-200
+           shadow-[0_0_20px_rgba(0,230,168,0.18)]
+           hover:shadow-[0_0_24px_rgba(0,230,168,0.4)] hover:-translate-y-0.5
+           disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none disabled:translate-y-0
+           cursor-pointer;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-ink-700 bg-ink-800
+           px-4 py-2.5 text-sm font-semibold text-ink-200 transition-all duration-200
+           hover:border-brand-400/50 hover:text-white hover:bg-ink-700/60
+           disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium
+           text-ink-400 transition-all duration-200 hover:text-white hover:bg-white/5 cursor-pointer;
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10
+           px-4 py-2.5 text-sm font-semibold text-red-400 transition-all duration-200
+           hover:bg-red-500/20 hover:border-red-500/50 disabled:opacity-50 cursor-pointer;
+  }
+
+  .input {
+    @apply w-full rounded-xl border border-white/10 bg-[#111] px-4 py-3 text-sm text-white
+           placeholder:text-white/20 transition-all
+           focus:outline-none focus:border-brand-400/60 focus:ring-1 focus:ring-brand-400/30
+           shadow-[0_4px_12px_rgba(0,0,0,0.5)];
+  }
+
+  .label {
+    @apply block mb-1.5 ml-1 text-[10px] font-bold uppercase tracking-[0.2em] text-ink-400;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1
+           text-[10px] font-bold uppercase tracking-[0.15em];
+  }
+  .badge-on {
+    @apply border-brand-400/40 bg-brand-400/10 text-brand-300;
+  }
+  .badge-off {
+    @apply border-ink-600 bg-ink-800 text-ink-400;
+  }
+
+  .stat-value {
+    @apply font-display text-3xl font-bold text-white tracking-tight;
+  }
+
+  /* Sidebar nav item */
+  .nav-item {
+    @apply flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium text-ink-400
+           transition-all duration-200 hover:text-white hover:bg-white/5 cursor-pointer;
+  }
+  .nav-item-active {
+    @apply bg-brand-400/10 text-brand-300 border border-brand-400/20
+           shadow-[0_0_18px_rgba(0,230,168,0.08)];
   }
 }

@@ -8,4 +8,13 @@ export default defineConfig({
   plugins: [react(),
     tailwindcss()
   ],
+  server: {
+    proxy: {
+      // Forward API calls to the Express backend (PORT=4000 in backend/.env)
+      '/api': {
+        target: 'http://localhost:4000',
+        changeOrigin: true,
+      },
+    },
+  },
 })

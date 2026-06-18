@@ -1,7 +1,7 @@
 import  { useState } from "react";
 import "./HeroSection.css";
 
-export default function HeroSection({ darkMode }) {
+export default function HeroSection({ darkMode }: any) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = ["Experts", "Community Groups", "Support"];
