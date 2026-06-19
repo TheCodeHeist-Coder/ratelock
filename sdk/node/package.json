@@ -1,0 +1,45 @@
+{
+  "name": "@ratelock/express",
+  "version": "0.1.0",
+  "description": "Drop-in rate limiting middleware for Express, powered by RateLock.",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "rate-limit",
+    "rate-limiter",
+    "express",
+    "middleware",
+    "ratelock",
+    "redis"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "peerDependencies": {
+    "express": ">=4"
+  },
+  "peerDependenciesMeta": {
+    "express": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}

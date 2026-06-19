@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ratelock"
+version = "0.1.0"
+description = "Drop-in rate limiting for Python backends, powered by RateLock."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+keywords = ["rate-limit", "rate-limiter", "fastapi", "starlette", "ratelock", "redis"]
+dependencies = [
+    "httpx>=0.24",
+]
+
+[project.optional-dependencies]
+# needed only for the ASGI middleware (FastAPI / Starlette apps)
+starlette = ["starlette>=0.27"]
+fastapi = ["starlette>=0.27"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["ratelock"]

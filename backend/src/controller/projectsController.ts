@@ -196,11 +196,14 @@ export const getEventsOfRunningProjectController = async (req: Request, res: Res
         const projectId = req.params.projectId as string;
         const limit = Math.min(Math.max(parseInt(req.query.limit as string) || 100, 1), 500);
 
-        const events = await prisma.event.findMany({
+        const rows = await prisma.event.findMany({
             where: { projectId },
             orderBy: { timestamp: 'desc' },
             take: limit,
         });
+
+        // Event.id is a BigInt (not JSON-serializable) — coerce to a number
+        const events = rows.map((e) => ({ ...e, id: Number(e.id) }));
 
         return res.status(200).json({ events });
 
