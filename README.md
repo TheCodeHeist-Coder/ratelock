@@ -545,47 +545,40 @@ ratelock/
 git clone https://github.com/yourname/ratelock.git
 cd ratelock
 
-# 2. Copy env files
-cp backend/.env.example backend/.env
-cp frontend/.env.example frontend/.env
+# 2. (optional) override the defaults — works without this
+cp .env.example .env
 
-# 3. Start all services
-docker compose up -d
-
-# 4. Run database migrations
-docker compose exec backend npx prisma migrate deploy
-
-# 5. Seed demo data
-docker compose exec backend npm run db:seed
-
-# 6. Open the dashboard
-open http://localhost:3000
+# 3. Build & start the full stack (db, redis, backend, nginx+frontend)
+docker compose up -d --build
 ```
 
-**Demo credentials:**
-```
-Email:    demo@ratelock.dev
-Password: demo1234
-API Key:  demo_key_abcdef1234567890abcdef1234567890
-```
+The backend container applies database migrations automatically on boot. Once
+the services are healthy:
+
+- **Dashboard:** http://localhost:8080  (nginx serves the frontend, proxies `/api/*` → backend)
+- **Backend API (direct):** http://localhost:4000
+
+Create your account from the dashboard's **Sign up** page, then add a project to
+get an API key.
 
 ### Local Development (without Docker)
 
 ```bash
 # Start postgres and redis only via Docker
-docker compose up postgres redis -d
+docker compose up db redis -d
 
 # Backend
 cd backend
+cp .env.example .env
 npm install
 npx prisma generate
 npx prisma migrate dev
-npm run dev              # runs on :4000
+npm run dev              # API on :4000
 
 # Frontend (in a new terminal)
 cd frontend
 npm install
-npm run dev              # runs on :3000
+npm run dev              # Vite dev server on :5173 (proxies /api → :4000)
 ```
 
 ### Prisma Commands
