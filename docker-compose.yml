@@ -21,8 +21,11 @@ services:
   redis:
     image: redis:7-alpine
     container_name: ratelock_redis
-    ports:
-      - "6379:6379"
+    # Not published to the host — the backend reaches it over the compose
+    # network as `redis:6379`. (Avoids clashing with a Redis already running
+    # on the host's 6379.) Add `ports: ["6380:6379"]` if you want host access.
+    expose:
+      - "6379"
     command: redis-server --requirepass ${REDIS_PASSWORD:-thisistheredislocalpassword} --bind 0.0.0.0
     volumes:
       - ratelock_redis_data:/data
@@ -37,6 +40,7 @@ services:
     build:
       context: ./backend
     container_name: ratelock_backend
+    restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
@@ -65,8 +69,10 @@ services:
       context: .
       dockerfile: Dockerfile.web
     container_name: ratelock_web
+    restart: unless-stopped
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     ports:
       - "8080:80"
 

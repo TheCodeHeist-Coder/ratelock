@@ -1,6 +1,8 @@
 /* ─── Fonts (matching old cocktail project) ─── */
 @import url("https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap");
 
+@import url('https://fonts.googleapis.com/css2?family=Chokokutai&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap');
+
 /* Tech fonts kept for nav / utility text */
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@300;400;700&display=swap");
 
@@ -21,7 +23,7 @@
   /* ── Tech fonts for nav/code elements ── */
   --font-display: "Orbitron", sans-serif;
   --font-main: "Space Grotesk", sans-serif;
-  --font-special: "Orbitron", sans-serif;
+  --font-special: "Chokokutai", system-ui;
   --font-mono: "JetBrains Mono", monospace;
 
   /* ── Colors ── */
