@@ -10,6 +10,7 @@ import {
   FiX,
 } from "react-icons/fi";
 import "./HeroSection.css";
+import Badge from "./Badge";
 
 export default function HeroSection() {
   // Site is dark-only now — the light/dark toggle was removed.
@@ -28,42 +29,17 @@ export default function HeroSection() {
 
   return (
     <div
-      className={`relative overflow-hidden transition-colors duration-300 ${
-        darkMode ? "bg-black" : "bg-white"
-      }`}
+      className={`relative overflow-hidden transition-colors duration-300 ${darkMode ? "bg-black" : "bg-white"
+        }`}
     >
-      {/* ── Ambient background ── */}
-      <div className="pointer-events-none absolute inset-0 z-0">
-        {/* grid */}
-        <div
-          className="absolute inset-0 opacity-[0.6]"
-          style={{
-            backgroundImage: darkMode
-              ? "linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px)"
-              : "linear-gradient(rgba(0,0,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.04) 1px,transparent 1px)",
-            backgroundSize: "44px 44px",
-            maskImage:
-              "radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%)",
-            WebkitMaskImage:
-              "radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%)",
-          }}
-        />
-        {/* green glow */}
-        <div className="absolute left-1/2 top-[-10%] h-[480px] w-[680px] -translate-x-1/2 rounded-full bg-[#00E6A8]/20 blur-[140px]" />
-        <div
-          className={`absolute right-[-10%] top-[30%] h-72 w-72 rounded-full blur-[120px] ${
-            darkMode ? "bg-emerald-500/10" : "bg-emerald-400/20"
-          }`}
-        />
-      </div>
+
 
       {/* ── Header (fixed / sticky across the page) ── */}
       <header
-        className={`fixed inset-x-0 top-0 z-50 py-4 transition-all duration-300 ${
-          scrolled || mobileMenuOpen
+        className={`fixed inset-x-0 top-0 z-50 py-4 transition-all duration-300 ${scrolled || mobileMenuOpen
             ? "border-b border-white/10 bg-black/60 backdrop-blur-xl"
             : "border-b border-transparent bg-transparent"
-        }`}
+          }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Logo */}
@@ -85,11 +61,10 @@ export default function HeroSection() {
                 key={item}
                 href="#"
                 onClick={(e) => e.preventDefault()}
-                className={`text-sm font-medium transition-colors ${
-                  darkMode
+                className={`text-sm font-medium transition-colors ${darkMode
                     ? "text-gray-300 hover:text-white"
                     : "text-gray-600 hover:text-gray-900"
-                }`}
+                  }`}
               >
                 {item}
               </a>
@@ -100,9 +75,8 @@ export default function HeroSection() {
           <div className="flex items-center gap-3">
             <Link
               to="/login"
-              className={`hidden text-sm font-medium transition-colors lg:block ${
-                darkMode ? "text-gray-300 hover:text-white" : "text-gray-600 hover:text-gray-900"
-              }`}
+              className={`hidden text-sm font-medium transition-colors lg:block ${darkMode ? "text-gray-300 hover:text-white" : "text-gray-600 hover:text-gray-900"
+                }`}
             >
               Log in
             </Link>
@@ -129,9 +103,8 @@ export default function HeroSection() {
         {/* Mobile menu */}
         {mobileMenuOpen && (
           <div
-            className={`mx-4 mt-3 rounded-2xl border p-4 lg:hidden ${
-              darkMode ? "border-white/10 bg-white/5" : "border-gray-200 bg-white"
-            }`}
+            className={`mx-4 mt-3 rounded-2xl border p-4 lg:hidden ${darkMode ? "border-white/10 bg-white/5" : "border-gray-200 bg-white"
+              }`}
           >
             <nav className="flex flex-col gap-3">
               {navLinks.map((item) => (
@@ -161,62 +134,59 @@ export default function HeroSection() {
 
       {/* ── Hero ── */}
       <section className="relative z-10 px-4 pb-24 pt-28 sm:px-6 lg:px-8 lg:pt-36">
-        <div className="mx-auto max-w-3xl text-center">
-          {/* Announcement pill */}
-          <div
-            className={`mb-7 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-medium backdrop-blur ${
-              darkMode
-                ? "border-white/10 bg-white/5 text-gray-200"
-                : "border-gray-200 bg-white/70 text-gray-700"
-            }`}
-          >
-            <span className="relative flex h-1.5 w-1.5 items-center justify-center">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#00E6A8] opacity-75" />
-              <span className="relative h-1.5 w-1.5 rounded-full bg-[#00E6A8]" />
-            </span>
-            Redis-powered · made by developers, for developers
+
+        <div className="mx-auto flex flex-col max-w-3xl text-center">
+          <div className="py-12">
+            <Badge />
           </div>
 
-          {/* Headline */}
-          <h1
-            className={`text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl ${
-              darkMode ? "text-white" : "text-gray-900"
-            }`}
-          >
-            API rate limiting,
-            <br />
-            <span className="bg-gradient-to-r from-[#00E6A8] via-emerald-400 to-[#00b873] bg-clip-text text-transparent">
-              shipped in two lines.
-            </span>
-          </h1>
 
-          {/* Subcopy */}
+          <div className="pt-8">
+
+
+            <h1
+              className={`text-4xl font-bold leading-[1.08] tracking-wide sm:text-5xl lg:text-7xl ${darkMode ? "text-white" : "text-gray-900"
+                }`}
+            >
+              API <span className="font-special text-[#189171]"> Rate </span> limiting,
+              <br />
+              <span className="bg-gradient-to-r from-[#00E6A8] via-emerald-400 to-[#00b873] bg-clip-text text-transparent">
+                shipped in two lines.
+              </span>
+            </h1>
+
+
+          </div>
+
+          <div>
+            
+          
           <p
-            className={`mx-auto mt-6 max-w-xl text-base leading-relaxed sm:text-lg ${
-              darkMode ? "text-gray-400" : "text-gray-600"
+            className={`mx-auto mt-6 max-w-3xl text-base leading-relaxed sm:text-lg ${
+              darkMode ? "text-gray-400" : "text-gray-800"
             }`}
           >
             Stop paying for API gateways you don't need. RateLock adds production-grade
             rate limiting to any backend — Redis-backed, dashboard included, zero infra to manage.
-          </p>
+          </p> 
+
+          </div>
 
           {/* CTAs */}
-          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <div className="mt-9 py-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               to="/register"
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#00E6A8] px-7 py-3.5 text-sm font-bold text-black shadow-[0_0_24px_rgba(0,230,168,0.3)] transition-all hover:-translate-y-0.5 hover:shadow-[0_0_32px_rgba(0,230,168,0.5)] sm:w-auto"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-sm bg-[#00dba1] px-16 py-3.5 text-sm font-bold text-black shadow-[0_0_24px_rgba(0,230,168,0.3)] transition-all hover:-translate-y-0.5 hover:shadow-[0_0_32px_rgba(0,230,168,0.5)] sm:w-auto"
             >
               Start for free
               <FiArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
             </Link>
             <a
-              href="#"
-              onClick={(e) => e.preventDefault()}
-              className={`inline-flex w-full items-center justify-center gap-2 rounded-xl border px-7 py-3.5 text-sm font-semibold transition-all sm:w-auto ${
-                darkMode
+              href="https://github.com/TheCodeHeist-Coder/ratelock"
+              className={`inline-flex w-full items-center justify-center gap-2 rounded-xl border px-16 py-3.5 text-sm font-semibold transition-all sm:w-auto ${darkMode
                   ? "border-white/15 bg-white/5 text-white hover:bg-white/10"
                   : "border-gray-300 bg-white text-gray-900 hover:bg-gray-50"
-              }`}
+                }`}
             >
               <FiGithub size={16} />
               View on GitHub
@@ -225,12 +195,11 @@ export default function HeroSection() {
 
           {/* Trust strip */}
           <div
-            className={`mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium ${
-              darkMode ? "text-gray-500" : "text-gray-500"
-            }`}
+            className={`mt-7 flex flex-wrap items-center justify-center gap-x-15 gap-y-16 text-xs font-medium ${darkMode ? "text-gray-500" : "text-gray-500"
+              }`}
           >
             {["No credit card required", "2-line integration", "Sub-10ms latency"].map((t) => (
-              <span key={t} className="inline-flex items-center gap-1.5">
+              <span key={t} className="inline-flex items-center gap-2">
                 <FiCheck size={14} className="text-[#00b873]" />
                 {t}
               </span>
@@ -242,9 +211,8 @@ export default function HeroSection() {
         <div className="relative mx-auto mt-16 max-w-3xl">
           {/* Floating stat chips */}
           <div
-            className={`absolute -left-4 top-10 z-20 hidden animate-float items-center gap-2 rounded-xl border px-3.5 py-2.5 shadow-xl backdrop-blur-md md:flex ${
-              darkMode ? "border-white/10 bg-black/70 text-white" : "border-gray-200 bg-white/90 text-gray-900"
-            }`}
+            className={`absolute -left-4 top-10 z-20 hidden animate-float items-center gap-2 rounded-xl border px-3.5 py-2.5 shadow-xl backdrop-blur-md md:flex ${darkMode ? "border-white/10 bg-black/70 text-white" : "border-gray-200 bg-white/90 text-gray-900"
+              }`}
           >
             <FiZap className="text-[#00E6A8]" size={16} />
             <div className="text-left">
@@ -253,9 +221,8 @@ export default function HeroSection() {
             </div>
           </div>
           <div
-            className={`absolute -right-4 bottom-12 z-20 hidden animate-float items-center gap-2 rounded-xl border px-3.5 py-2.5 shadow-xl backdrop-blur-md md:flex ${
-              darkMode ? "border-white/10 bg-black/70 text-white" : "border-gray-200 bg-white/90 text-gray-900"
-            }`}
+            className={`absolute -right-4 bottom-12 z-20 hidden animate-float items-center gap-2 rounded-xl border px-3.5 py-2.5 shadow-xl backdrop-blur-md md:flex ${darkMode ? "border-white/10 bg-black/70 text-white" : "border-gray-200 bg-white/90 text-gray-900"
+              }`}
             style={{ animationDelay: "1.5s" }}
           >
             <FiShield className="text-[#00E6A8]" size={16} />
@@ -267,9 +234,8 @@ export default function HeroSection() {
 
           {/* Window */}
           <div
-            className={`relative overflow-hidden rounded-2xl border shadow-2xl backdrop-blur ${
-              darkMode ? "border-white/10 bg-[#0b0b0d]/90" : "border-gray-200 bg-[#0b0b0d]"
-            }`}
+            className={`relative overflow-hidden max-w-[1800px] rounded-md border shadow-2xl backdrop-blur ${darkMode ? "border-white/10 bg-[#0b0b0d]/90" : "border-gray-200 bg-[#0b0b0d]"
+              }`}
           >
             {/* chrome */}
             <div className="flex items-center gap-2 border-b border-white/5 px-4 py-3">
