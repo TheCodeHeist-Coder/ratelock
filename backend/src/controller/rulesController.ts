@@ -1,7 +1,7 @@
 import { type Request, type Response } from "express"
 import { errorResponse } from "../utils/errot.js";
 import { prisma } from "../lib/prisma.js";
-import { error } from "node:console";
+import { invalidateRuleCache } from "../services/rateLimitService.js";
 
 
 // to get all the rules related to the specific project
@@ -67,7 +67,8 @@ export const createRulesController = async (req: Request, res: Response) => {
             }
         });
 
-        // now invalidate the old-rules so that in the next request the new rules will be fetched from the database and stored in redis cache
+        // invalidate so the next request re-fetches fresh rules into the hot-path cache
+        invalidateRuleCache(projectId as string);
 
         return res.status(201).json({ rule });
 
@@ -103,7 +104,7 @@ export const editRulesController = async (req: Request, res: Response) => {
         });
 
 
-        // now invalidate the old rules from the cache
+        invalidateRuleCache(projectId as string);
         return res.status(200).json({ rule });
 
     } catch (error) {
@@ -128,7 +129,7 @@ export const deleteRulesController = async (req: Request, res: Response) => {
         });
 
 
-        // now invalidate the rules from the cache
+        invalidateRuleCache(projectId as string);
 
         return res.status(200).json({
             success: true,

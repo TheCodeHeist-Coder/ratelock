@@ -32,10 +32,10 @@ router.post("/:projectId/rotate-api-key", authMiddleware, IsProjectOwner, rotate
 
 
 // to get the states of a running project
-router.get("/:projectId/states", getProjectStatesController);
+router.get("/:projectId/states", authMiddleware, IsProjectOwner, getProjectStatesController);
 
 
 // to get the details related to the running project
-router.get("/:projectId/events", getEventsOfRunningProjectController);
+router.get("/:projectId/events", authMiddleware, IsProjectOwner, getEventsOfRunningProjectController);
 
 export default router;

@@ -2,6 +2,7 @@ import { configDotenv } from "dotenv";
 configDotenv();
 import app from "./app.js";
 import { prisma } from "./lib/prisma.js";
+import { redis } from "./config/redis.js";
 
 const PORT = process.env.PORT || 3000;
 
@@ -9,7 +10,10 @@ async function AllisWell() {
 
     try {
         await prisma.$connect();
-        //? Redis server starting
+        console.log('Connected to Postgres');
+
+        // redis uses lazyConnect — open the connection explicitly on boot
+        await redis.connect();
 
         app.listen(PORT, () => {
             console.log(`SRVR is still alive at port ${PORT}`);
@@ -28,8 +32,11 @@ AllisWell();
 async function shutdown(signal: string) {
     console.log(`Shutting down due to ${signal}`);
 
-    // redis disconnest
-
+    try {
+        await redis.quit();
+    } catch {
+        // ignore — connection may already be closed
+    }
     await prisma.$disconnect();
     process.exit(0);
 

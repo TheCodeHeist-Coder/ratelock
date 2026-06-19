@@ -1,9 +1,9 @@
 
 import { type Request, type Response } from 'express';
 import { prisma } from '../lib/prisma.js';
-import { use } from 'react';
 import { errorResponse } from '../utils/errot.js';
 import { randomBytes } from 'node:crypto';
+import { getDashboardStates } from '../services/analyticsService.js';
 
 
 /// to get all projects of a user
@@ -172,13 +172,14 @@ export const rotateApiKeyController = async (req: Request, res: Response) => {
 
 
 
-// to get the states of a running project
+// to get the analytics / stats of a running project
 export const getProjectStatesController = async (req: Request, res: Response) => {
     try {
+        const projectId = req.params.projectId as string;
+        const hours = Math.min(Math.max(parseInt(req.query.hours as string) || 24, 1), 24 * 30);
 
-        const projectId = req.params.projectId;
-
-        // logic for getting the states of a running project -> let's see after
+        const stats = await getDashboardStates(projectId, hours);
+        return res.status(200).json({ stats });
 
     } catch (error) {
         console.log('Error while fetching the project states:', error);
@@ -188,16 +189,23 @@ export const getProjectStatesController = async (req: Request, res: Response) =>
 
 
 
-// to get the events related to the running project
-
+// to get the recent events related to the running project
 export const getEventsOfRunningProjectController = async (req: Request, res: Response) => {
 
     try {
-        //! lets see it later..(phle se nahi krna ispe kaam, okk)
+        const projectId = req.params.projectId as string;
+        const limit = Math.min(Math.max(parseInt(req.query.limit as string) || 100, 1), 500);
+
+        const events = await prisma.event.findMany({
+            where: { projectId },
+            orderBy: { timestamp: 'desc' },
+            take: limit,
+        });
+
+        return res.status(200).json({ events });
+
     } catch (error) {
         console.log('Error while fetching the events of the running project:', error);
         return errorResponse(res, 500, 'Failed to fetch the events of the running project');
     }
-
-
 }
