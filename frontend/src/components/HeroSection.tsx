@@ -3,14 +3,15 @@ import { Link } from "react-router-dom";
 import {
   FiArrowRight,
   FiGithub,
-  FiShield,
-  FiZap,
   FiCheck,
   FiMenu,
   FiX,
 } from "react-icons/fi";
 import "./HeroSection.css";
 import Badge from "./Badge";
+import RateLimiterHero from "./Animations";
+import LiveDashboard from "./LiveDashboard";
+import HeroBackground from "./HeroBackground";
 
 export default function HeroSection() {
   // Site is dark-only now — the light/dark toggle was removed.
@@ -32,6 +33,8 @@ export default function HeroSection() {
       className={`relative overflow-hidden transition-colors duration-300 ${darkMode ? "bg-black" : "bg-white"
         }`}
     >
+      {/* Animated hero backdrop */}
+      <HeroBackground />
 
 
       {/* ── Header (fixed / sticky across the page) ── */}
@@ -208,97 +211,9 @@ export default function HeroSection() {
         </div>
 
         {/* ── Product mockup ── */}
-        <div className="relative mx-auto mt-16 max-w-3xl">
-          {/* Floating stat chips */}
-          <div
-            className={`absolute -left-4 top-10 z-20 hidden animate-float items-center gap-2 rounded-xl border px-3.5 py-2.5 shadow-xl backdrop-blur-md md:flex ${darkMode ? "border-white/10 bg-black/70 text-white" : "border-gray-200 bg-white/90 text-gray-900"
-              }`}
-          >
-            <FiZap className="text-[#00E6A8]" size={16} />
-            <div className="text-left">
-              <p className="text-sm font-bold leading-none">&lt;10ms</p>
-              <p className="text-[10px] uppercase tracking-wider text-gray-500">p99 latency</p>
-            </div>
-          </div>
-          <div
-            className={`absolute -right-4 bottom-12 z-20 hidden animate-float items-center gap-2 rounded-xl border px-3.5 py-2.5 shadow-xl backdrop-blur-md md:flex ${darkMode ? "border-white/10 bg-black/70 text-white" : "border-gray-200 bg-white/90 text-gray-900"
-              }`}
-            style={{ animationDelay: "1.5s" }}
-          >
-            <FiShield className="text-[#00E6A8]" size={16} />
-            <div className="text-left">
-              <p className="text-sm font-bold leading-none">99.99%</p>
-              <p className="text-[10px] uppercase tracking-wider text-gray-500">uptime SLA</p>
-            </div>
-          </div>
-
-          {/* Window */}
-          <div
-            className={`relative overflow-hidden max-w-[1800px] rounded-md border shadow-2xl backdrop-blur ${darkMode ? "border-white/10 bg-[#0b0b0d]/90" : "border-gray-200 bg-[#0b0b0d]"
-              }`}
-          >
-            {/* chrome */}
-            <div className="flex items-center gap-2 border-b border-white/5 px-4 py-3">
-              <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
-              <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
-              <span className="h-3 w-3 rounded-full bg-[#28c840]" />
-              <span className="ml-3 font-mono text-xs text-white/40">app/middleware.ts</span>
-            </div>
-
-            {/* code */}
-            <div className="grid gap-0 md:grid-cols-[1.3fr_1fr]">
-              <pre className="overflow-x-auto p-5 font-mono text-[13px] leading-relaxed">
-                <code>
-                  <span className="text-fuchsia-400">import</span>{" "}
-                  <span className="text-white">{"{ RateLock }"}</span>{" "}
-                  <span className="text-fuchsia-400">from</span>{" "}
-                  <span className="text-amber-300">"@ratelock/sdk"</span>;
-                  {"\n\n"}
-                  <span className="text-fuchsia-400">const</span>{" "}
-                  <span className="text-sky-300">limiter</span> ={" "}
-                  <span className="text-fuchsia-400">new</span>{" "}
-                  <span className="text-[#00E6A8]">RateLock</span>(
-                  <span className="text-white">{"{"}</span>
-                  {"\n"}
-                  {"  "}apiKey: <span className="text-amber-300">process.env.RL_KEY</span>,
-                  {"\n"}
-                  <span className="text-white">{"}"}</span>);
-                  {"\n\n"}
-                  <span className="text-gray-500">{"// drop into any route"}</span>
-                  {"\n"}
-                  <span className="text-fuchsia-400">await</span>{" "}
-                  <span className="text-sky-300">limiter</span>.
-                  <span className="text-[#00E6A8]">protect</span>(req, res);
-                </code>
-              </pre>
-
-              {/* response panel */}
-              <div className="border-t border-white/5 p-5 md:border-l md:border-t-0">
-                <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
-                  Live response
-                </p>
-                <div className="mb-4 flex items-center gap-2">
-                  <span className="rounded-md bg-[#00E6A8]/15 px-2 py-1 font-mono text-[11px] font-bold text-[#00E6A8]">
-                    200 OK
-                  </span>
-                  <span className="font-mono text-[11px] text-white/50">allowed</span>
-                </div>
-                <div className="space-y-2.5 font-mono text-[11px] text-white/60">
-                  <div className="flex justify-between">
-                    <span>X-RateLimit-Limit</span>
-                    <span className="text-white/90">100</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>X-RateLimit-Remaining</span>
-                    <span className="text-[#00E6A8]">97</span>
-                  </div>
-                  <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-                    <div className="h-full w-[97%] rounded-full bg-gradient-to-r from-[#00b873] to-[#00E6A8]" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="relative mx-auto mt-16 w-[80vw] max-w-none">
+          {/* Live dashboard preview */}
+          <LiveDashboard />
         </div>
       </section>
     </div>
