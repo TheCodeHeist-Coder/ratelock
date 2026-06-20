@@ -1,4 +1,5 @@
 import HeroSection from "../components/HeroSection";
+import RateLimiterHero from "../components/Animations";
 import {
   CompaniesRow,
   IntegrationSection,
@@ -14,6 +15,7 @@ export default function LandingPage() {
       <HeroSection />
       <CompaniesRow />
       <IntegrationSection />
+      <RateLimiterHero />
       <StatsSection />
       <CTASection />
       <Footer />
