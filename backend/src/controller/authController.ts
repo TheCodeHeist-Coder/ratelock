@@ -2,6 +2,7 @@ import { type Request, type Response } from "express"
 import { prisma } from "../lib/prisma.js"
 import bcrypt from 'bcrypt';
 import { errorResponse } from "../utils/errot.js";
+import { verifyUserPassword } from "../utils/password.js";
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
@@ -117,5 +118,28 @@ export const userLoginController = async (req: Request, res: Response) => {
         return errorResponse(res, 500, 'Internal server error');
     }
 
+
+}
+
+
+// re-authenticate the current user before a sensitive action (reveal key, etc.)
+export const verifyPasswordController = async (req: Request, res: Response) => {
+
+    const { password } = req.body;
+
+    if (!password) {
+        return errorResponse(res, 400, 'Password is required');
+    }
+
+    try {
+        const ok = await verifyUserPassword(req.user.id, password);
+        if (!ok) {
+            return errorResponse(res, 401, 'Incorrect password');
+        }
+        return res.json({ valid: true });
+    } catch (err) {
+        console.error('Verify password error:', err);
+        return errorResponse(res, 500, 'Internal server error');
+    }
 
 }

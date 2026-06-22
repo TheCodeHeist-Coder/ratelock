@@ -22,12 +22,13 @@ export default function DashboardLayout() {
   return (
     <div className="min-h-screen bg-black text-white font-main selection:bg-[#00E6A8] selection:text-black">
       {/* Ambient glow */}
-      <div className="pointer-events-none fixed top-0 left-0 h-96 w-96 -translate-x-1/3 -translate-y-1/3 rounded-full bg-brand-400/5 blur-[140px]" />
+      <div className="pointer-events-none fixed top-0 left-0 h-96 w-96 -translate-x-1/3 -translate-y-1/3 rounded-full bg-brand-400/[0.06] blur-[150px]" />
 
       {/* ── Sidebar (desktop) ── */}
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-white/5 bg-ink-900/60 backdrop-blur-xl lg:flex">
         <div className="flex items-center gap-2 px-6 py-6">
-          <img src="/RateLock.svg" alt="RateLock" className="h-8 w-auto" />
+          <img src="/logo.png" alt="RateLock" className="h-10 w-auto" />
+          <h1 className="font-special font-bold"> RateLock </h1>
         </div>
 
         <nav className="flex-1 space-y-1 px-3 py-2">
@@ -44,21 +45,20 @@ export default function DashboardLayout() {
             Analytics
             <span className="ml-auto text-[9px] uppercase tracking-wider text-ink-500">soon</span>
           </a>
-          <a
-            href="#"
-            className="nav-item"
-            onClick={(e) => e.preventDefault()}
+          <NavLink
+            to="/docs"
+            className={({ isActive }) => `nav-item ${isActive ? "nav-item-active" : ""}`}
             title="Documentation"
           >
             <FiBookOpen size={17} />
             Docs
-          </a>
+          </NavLink>
         </nav>
 
         {/* User card */}
         <div className="border-t border-white/5 p-3">
           <div className="flex items-center gap-3 rounded-xl px-3 py-2.5">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-400/15 text-xs font-bold text-brand-300">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-400/10 text-xs font-bold text-brand-300">
               {initials || "U"}
             </div>
             <div className="min-w-0 flex-1">

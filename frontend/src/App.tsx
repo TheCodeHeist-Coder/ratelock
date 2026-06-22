@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import LoginPage from './screens/LoginPage'
 import RegisterPage from './screens/RegisterPage'
 import LandingPage from './screens/LandingPage'
+import Docs from './screens/Docs'
 import ProtectedRoute from './components/ProtectedRoute'
 import DashboardLayout from './components/dashboard/DashboardLayout'
 import ProjectsList from './screens/Dashboard'
@@ -12,6 +13,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<LandingPage />} />
+        <Route path='/docs' element={<Docs />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/register' element={<RegisterPage />} />
 

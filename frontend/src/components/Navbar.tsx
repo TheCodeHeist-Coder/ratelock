@@ -3,9 +3,9 @@ import { Link, useLocation } from "react-router-dom";
 import { FiArrowRight, FiMenu, FiX } from "react-icons/fi";
 
 const navLinks = [
-  { label: "Features", href: "#features" },
-  { label: "Docs", href: "#docs" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "Features", href: "#features", route: false },
+  { label: "Docs", href: "/docs", route: true },
+  { label: "Pricing", href: "#pricing", route: false },
 ];
 
 // `minimal` renders just the brand (used on auth pages where nav links / CTAs are noise).
@@ -50,17 +50,28 @@ const Navbar = ({ minimal = false }: { minimal?: boolean }) => {
           {/* Center links — desktop */}
           {!minimal && (
           <ul className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-9 md:flex">
-            {navLinks.map((link) => (
-              <li key={link.label}>
-                <a
-                  href={link.href}
-                  className="group relative text-sm font-medium text-gray-300 transition-colors hover:text-white"
-                >
-                  {link.label}
-                  <span className="absolute -bottom-1.5 left-0 h-px w-0 bg-[#00E6A8] transition-all duration-300 group-hover:w-full" />
-                </a>
-              </li>
-            ))}
+            {navLinks.map((link) => {
+              const cls =
+                "group relative text-sm font-medium text-gray-300 transition-colors hover:text-white";
+              const underline = (
+                <span className="absolute -bottom-1.5 left-0 h-px w-0 bg-[#00E6A8] transition-all duration-300 group-hover:w-full" />
+              );
+              return (
+                <li key={link.label}>
+                  {link.route ? (
+                    <Link to={link.href} className={cls}>
+                      {link.label}
+                      {underline}
+                    </Link>
+                  ) : (
+                    <a href={link.href} className={cls}>
+                      {link.label}
+                      {underline}
+                    </a>
+                  )}
+                </li>
+              );
+            })}
           </ul>
           )}
 
@@ -100,16 +111,23 @@ const Navbar = ({ minimal = false }: { minimal?: boolean }) => {
         {!minimal && open && (
           <div className="border-t border-white/10 px-5 pb-6 pt-4 md:hidden">
             <ul className="flex flex-col gap-1">
-              {navLinks.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="block rounded-xl px-3 py-3 text-sm font-medium text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+              {navLinks.map((link) => {
+                const cls =
+                  "block rounded-xl px-3 py-3 text-sm font-medium text-gray-300 transition-colors hover:bg-white/5 hover:text-white";
+                return (
+                  <li key={link.label}>
+                    {link.route ? (
+                      <Link to={link.href} className={cls}>
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <a href={link.href} className={cls}>
+                        {link.label}
+                      </a>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
             <div className="mt-4 flex flex-col gap-3">
               <Link

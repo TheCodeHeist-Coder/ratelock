@@ -13,6 +13,7 @@ interface AuthState {
     register: (name: string, email: string, password: string) => Promise<void>;
     logout: () => void;
     fetchMe: () => Promise<void>;
+    verifyPassword: (password: string) => Promise<boolean>;
 }
 
 
@@ -58,6 +59,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       set({ user: null, token: null });
     } finally {
       set({ loading: false, initialized: true });
+    }
+  },
+
+  verifyPassword: async (password) => {
+    try {
+      await api.post('/auth/verify-password', { password });
+      return true;
+    } catch {
+      return false;
     }
   },
 }));

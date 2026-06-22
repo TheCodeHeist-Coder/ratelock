@@ -7,6 +7,8 @@ import {
   FiClock, FiZap,
 } from "react-icons/fi";
 import { useProjectStore } from "../stores/projectStore";
+import { useAuthStore } from "../stores/authStore";
+import PasswordPrompt from "../components/PasswordPrompt";
 import type { Algorithm, Alert, AlertChannel, Rule } from "../types";
 
 type Tab = "overview" | "rules" | "alerts" | "settings";
@@ -58,7 +60,7 @@ export default function ProjectDetail() {
 
       <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
-          <h1 className="truncate font-display text-2xl font-bold tracking-tight text-white">
+          <h1 className="truncate font-main text-2xl font-bold tracking-wide text-white">
             {project?.name ?? "Loading…"}
           </h1>
           <p className="mt-0.5 flex items-center gap-2 text-sm text-ink-400">
@@ -78,7 +80,7 @@ export default function ProjectDetail() {
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`relative flex items-center gap-2 whitespace-nowrap px-4 py-3 text-sm font-medium transition-colors ${
+            className={`relative flex cursor-pointer items-center gap-2 whitespace-nowrap px-4 py-3 text-sm font-medium transition-colors ${
               tab === t.key ? "text-brand-300" : "text-ink-400 hover:text-white"
             }`}
           >
@@ -187,10 +189,13 @@ function OverviewTab({ stats, events, statsHours, onRange }: {
 }
 
 function StatCard({ icon, label, value, tone }: { icon: React.ReactNode; label: string; value?: number | string; tone?: "good" | "bad" }) {
-  const toneClass = tone === "good" ? "text-brand-400" : tone === "bad" ? "text-red-400" : "text-ink-300";
+  const toneClass =
+    tone === "good" ? "bg-brand-400/10 text-brand-400"
+    : tone === "bad" ? "bg-red-500/10 text-red-400"
+    : "bg-white/5 text-ink-300";
   return (
-    <div className="card p-5">
-      <div className={`mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 ${toneClass}`}>{icon}</div>
+    <div className="card p-5 transition-colors duration-200 hover:border-white/15">
+      <div className={`mb-3 flex h-9 w-9 font-main items-center justify-center rounded-lg ${toneClass}`}>{icon}</div>
       <p className="stat-value">{value ?? "—"}</p>
       <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.15em] text-ink-500">{label}</p>
     </div>
@@ -423,12 +428,14 @@ function AlertModal({ initial, onClose, onSave }: { initial: Partial<Alert>; onC
 function SettingsTab({ project }: { project: NonNullable<ReturnType<typeof useProjectStore.getState>["activeProject"]> }) {
   const navigate = useNavigate();
   const { updateProject, rotateKey, deleteProject } = useProjectStore();
+  const verifyPassword = useAuthStore((s) => s.verifyPassword);
   const [name, setName] = useState(project.name);
   const [desc, setDesc] = useState(project.description ?? "");
   const [savedMsg, setSavedMsg] = useState(false);
   const [revealed, setRevealed] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [rotating, setRotating] = useState(false);
+  // which password-gated action is currently being confirmed
+  const [gate, setGate] = useState<null | "reveal" | "rotate" | "delete">(null);
 
   useEffect(() => { setName(project.name); setDesc(project.description ?? ""); }, [project.id]);
 
@@ -451,20 +458,15 @@ function SettingsTab({ project }: { project: NonNullable<ReturnType<typeof usePr
             {revealed ? project.apiKey : maskedKey}
           </code>
           <div className="flex gap-2">
-            <button className="btn-secondary" onClick={() => setRevealed((v) => !v)}>{revealed ? "Hide" : "Reveal"}</button>
+            <button className="btn-secondary" onClick={() => (revealed ? setRevealed(false) : setGate("reveal"))}>{revealed ? "Hide" : "Reveal"}</button>
             <button className="btn-secondary" onClick={copyKey}>{copied ? <FiCheck size={15} className="text-brand-400" /> : <FiCopy size={15} />}{copied ? "Copied" : "Copy"}</button>
           </div>
         </div>
         <button
           className="btn-ghost mt-3 px-0! text-xs text-ink-400 hover:bg-transparent! hover:text-red-400"
-          disabled={rotating}
-          onClick={async () => {
-            if (!confirm("Rotate API key? The current key will stop working immediately.")) return;
-            setRotating(true); setRevealed(true);
-            try { await rotateKey(project.id); } finally { setRotating(false); }
-          }}
+          onClick={() => setGate("rotate")}
         >
-          <FiRefreshCw size={13} className={rotating ? "animate-spin" : ""} /> Rotate key
+          <FiRefreshCw size={13} /> Rotate key
         </button>
       </div>
 
@@ -492,17 +494,52 @@ function SettingsTab({ project }: { project: NonNullable<ReturnType<typeof usePr
       <div className="card border-red-500/20 p-6">
         <h3 className="font-semibold text-red-400">Danger zone</h3>
         <p className="mt-1 text-sm text-ink-400">Deleting a project removes its rules, alerts and events permanently.</p>
-        <button
-          className="btn-danger mt-4"
-          onClick={async () => {
-            if (!confirm(`Delete "${project.name}"? This cannot be undone.`)) return;
-            await deleteProject(project.id);
-            navigate("/dashboard");
-          }}
-        >
+        <button className="btn-danger mt-4" onClick={() => setGate("delete")}>
           <FiTrash2 size={15} /> Delete project
         </button>
       </div>
+
+      {gate === "reveal" && (
+        <PasswordPrompt
+          title="Reveal API key"
+          message="Confirm your account password to display the full API key."
+          confirmLabel="Reveal key"
+          onConfirm={async (pw) => {
+            const ok = await verifyPassword(pw);
+            if (!ok) throw new Error("Incorrect password.");
+            setRevealed(true);
+          }}
+          onClose={() => setGate(null)}
+        />
+      )}
+
+      {gate === "rotate" && (
+        <PasswordPrompt
+          title="Rotate API key"
+          message="The current key stops working immediately. Confirm your password to generate a new one."
+          confirmLabel="Rotate key"
+          tone="danger"
+          onConfirm={async (pw) => {
+            await rotateKey(project.id, pw);
+            setRevealed(true);
+          }}
+          onClose={() => setGate(null)}
+        />
+      )}
+
+      {gate === "delete" && (
+        <PasswordPrompt
+          title="Delete project"
+          message={`This permanently deletes "${project.name}" and all its rules, alerts and events. Confirm your password to continue.`}
+          confirmLabel="Delete project"
+          tone="danger"
+          onConfirm={async (pw) => {
+            await deleteProject(project.id, pw);
+            navigate("/dashboard");
+          }}
+          onClose={() => setGate(null)}
+        />
+      )}
     </div>
   );
 }
@@ -535,7 +572,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 function EmptyBlock({ icon, title, hint }: { icon: React.ReactNode; title: string; hint: string }) {
   return (
     <div className="card flex flex-col items-center p-14 text-center">
-      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-400/10 text-brand-400">{icon}</div>
+      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-400/10 ring-1 ring-brand-400/20 text-brand-400">{icon}</div>
       <h3 className="mb-2 font-semibold text-white">{title}</h3>
       <p className="max-w-sm text-sm text-ink-400">{hint}</p>
     </div>

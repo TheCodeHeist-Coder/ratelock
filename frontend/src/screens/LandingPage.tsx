@@ -1,9 +1,11 @@
 import HeroSection from "../components/HeroSection";
+import FeaturesSection from "../components/featureSecton";
 import RateLimiterHero from "../components/Animations";
 import {
   CompaniesRow,
   IntegrationSection,
   StatsSection,
+  PricingSection,
   CTASection,
   Footer,
 } from "../components/landingComponents";
@@ -14,9 +16,11 @@ export default function LandingPage() {
     <div className="min-h-screen bg-black">
       <HeroSection />
       <CompaniesRow />
+      <FeaturesSection />
       <IntegrationSection />
       <RateLimiterHero />
       <StatsSection />
+      <PricingSection />
       <CTASection />
       <Footer />
     </div>

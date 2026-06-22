@@ -6,10 +6,12 @@ import {
   FiCheck,
   FiMenu,
   FiX,
+  FiGrid,
 } from "react-icons/fi";
 import "./HeroSection.css";
 import Badge from "./Badge";
-import RateLimiterHero from "./Animations";
+import { useAuthStore } from "../stores/authStore";
+
 import LiveDashboard from "./LiveDashboard";
 import HeroBackground from "./HeroBackground";
 
@@ -26,7 +28,20 @@ export default function HeroSection() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-  const navLinks = ["Features", "Docs", "Pricing"];
+
+  // Auth-aware header — hydrate the session from a stored token so the landing
+  // page knows whether the visitor is already signed in.
+  const { user, token, initialized, fetchMe } = useAuthStore();
+  useEffect(() => {
+    if (token && !initialized) fetchMe();
+  }, [token, initialized, fetchMe]);
+  const loggedIn = !!user;
+  const displayName = user?.name?.trim().split(/\s+/)[0] || user?.email || "Account";
+  const navLinks: { label: string; to?: string; href?: string }[] = [
+    { label: "Features", href: "#features" },
+    { label: "Docs", to: "/docs" },
+    { label: "Pricing", href: "#pricing" },
+  ];
 
   return (
     <div
@@ -59,37 +74,65 @@ export default function HeroSection() {
 
           {/* Center nav */}
           <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-10 lg:flex">
-            {navLinks.map((item) => (
-              <a
-                key={item}
-                href="#"
-                onClick={(e) => e.preventDefault()}
-                className={`text-sm font-medium transition-colors ${darkMode
-                    ? "text-gray-300 hover:text-white"
-                    : "text-gray-600 hover:text-gray-900"
-                  }`}
-              >
-                {item}
-              </a>
-            ))}
+            {navLinks.map((item) => {
+              const cls = `text-sm font-medium transition-colors ${darkMode
+                  ? "text-gray-300 hover:text-white"
+                  : "text-gray-600 hover:text-gray-900"
+                }`;
+              return item.to ? (
+                <Link key={item.label} to={item.to} className={cls}>
+                  {item.label}
+                </Link>
+              ) : item.href ? (
+                <a key={item.label} href={item.href} className={cls}>
+                  {item.label}
+                </a>
+              ) : (
+                <a key={item.label} href="#" onClick={(e) => e.preventDefault()} className={cls}>
+                  {item.label}
+                </a>
+              );
+            })}
           </nav>
 
           {/* Actions */}
           <div className="flex items-center gap-3">
-            <Link
-              to="/login"
-              className={`hidden text-sm font-medium transition-colors lg:block ${darkMode ? "text-gray-300 hover:text-white" : "text-gray-600 hover:text-gray-900"
-                }`}
-            >
-              Log in
-            </Link>
-            <Link
-              to="/register"
-              className="hidden items-center gap-1.5 rounded-xl bg-[#00E6A8] px-4 py-2 text-sm font-semibold text-black shadow-[0_0_18px_rgba(0,230,168,0.25)] transition-all hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(0,230,168,0.45)] lg:inline-flex"
-            >
-              Get started
-              <FiArrowRight size={15} />
-            </Link>
+            {loggedIn ? (
+              <>
+                <Link
+                  to="/dashboard"
+                  title="Go to your dashboard"
+                  className={`hidden text-sm font-medium transition-colors lg:block ${darkMode ? "text-gray-300 hover:text-white" : "text-gray-600 hover:text-gray-900"
+                    }`}
+                >
+                  {displayName}
+                </Link>
+                <Link
+                  to="/dashboard"
+                  className="hidden items-center gap-1.5 rounded-xl bg-[#00E6A8] px-4 py-2 text-sm font-semibold text-black shadow-[0_0_18px_rgba(0,230,168,0.25)] transition-all hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(0,230,168,0.45)] lg:inline-flex"
+                >
+                  <FiGrid size={15} />
+                  Dashboard
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className={`hidden text-sm font-medium transition-colors lg:block ${darkMode ? "text-gray-300 hover:text-white" : "text-gray-600 hover:text-gray-900"
+                    }`}
+                >
+                  Log in
+                </Link>
+                <Link
+                  to="/register"
+                  className="hidden items-center gap-1.5 rounded-xl bg-[#00E6A8] px-4 py-2 text-sm font-semibold text-black shadow-[0_0_18px_rgba(0,230,168,0.25)] transition-all hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(0,230,168,0.45)] lg:inline-flex"
+                >
+                  Get started
+                  <FiArrowRight size={15} />
+                </Link>
+              </>
+            )}
 
             {/* Mobile toggle */}
             <button
@@ -110,26 +153,50 @@ export default function HeroSection() {
               }`}
           >
             <nav className="flex flex-col gap-3">
-              {navLinks.map((item) => (
-                <a
-                  key={item}
-                  href="#"
-                  onClick={(e) => e.preventDefault()}
-                  className={`text-sm font-medium ${darkMode ? "text-gray-200" : "text-gray-800"}`}
-                >
-                  {item}
-                </a>
-              ))}
+              {navLinks.map((item) => {
+                const cls = `text-sm font-medium ${darkMode ? "text-gray-200" : "text-gray-800"}`;
+                return item.to ? (
+                  <Link key={item.label} to={item.to} onClick={() => setMobileMenuOpen(false)} className={cls}>
+                    {item.label}
+                  </Link>
+                ) : item.href ? (
+                  <a key={item.label} href={item.href} onClick={() => setMobileMenuOpen(false)} className={cls}>
+                    {item.label}
+                  </a>
+                ) : (
+                  <a key={item.label} href="#" onClick={(e) => e.preventDefault()} className={cls}>
+                    {item.label}
+                  </a>
+                );
+              })}
               <hr className={darkMode ? "border-white/10" : "border-gray-200"} />
-              <Link to="/login" className={`text-sm font-medium ${darkMode ? "text-gray-200" : "text-gray-800"}`}>
-                Log in
-              </Link>
-              <Link
-                to="/register"
-                className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-[#00E6A8] px-4 py-2.5 text-sm font-semibold text-black"
-              >
-                Get started <FiArrowRight size={15} />
-              </Link>
+              {loggedIn ? (
+                <>
+                  <span className={`text-sm font-medium ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+                    Signed in as {displayName}
+                  </span>
+                  <Link
+                    to="/dashboard"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-[#00E6A8] px-4 py-2.5 text-sm font-semibold text-black"
+                  >
+                    <FiGrid size={15} /> Dashboard
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" onClick={() => setMobileMenuOpen(false)} className={`text-sm font-medium ${darkMode ? "text-gray-200" : "text-gray-800"}`}>
+                    Log in
+                  </Link>
+                  <Link
+                    to="/register"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-[#00E6A8] px-4 py-2.5 text-sm font-semibold text-black"
+                  >
+                    Get started <FiArrowRight size={15} />
+                  </Link>
+                </>
+              )}
             </nav>
           </div>
         )}
@@ -178,10 +245,10 @@ export default function HeroSection() {
           {/* CTAs */}
           <div className="mt-9 py-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
-              to="/register"
+              to={loggedIn ? "/dashboard" : "/register"}
               className="group inline-flex w-full items-center justify-center gap-2 rounded-sm bg-[#00dba1] px-16 py-3.5 text-sm font-bold text-black shadow-[0_0_24px_rgba(0,230,168,0.3)] transition-all hover:-translate-y-0.5 hover:shadow-[0_0_32px_rgba(0,230,168,0.5)] sm:w-auto"
             >
-              Start for free
+              {loggedIn ? "Try it out" : "Start for free"}
               <FiArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
             </Link>
             <a

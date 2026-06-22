@@ -2,6 +2,7 @@
 import { type Request, type Response } from 'express';
 import { prisma } from '../lib/prisma.js';
 import { errorResponse } from '../utils/errot.js';
+import { verifyUserPassword } from '../utils/password.js';
 import { randomBytes } from 'node:crypto';
 import { getDashboardStates } from '../services/analyticsService.js';
 
@@ -128,6 +129,12 @@ export const deleteProjectController = async (req: Request, res: Response) => {
     try {
         const projectId = req.params.projectId;
 
+        // require the account password before a destructive delete
+        const ok = await verifyUserPassword(req.user.id, req.body?.password);
+        if (!ok) {
+            return errorResponse(res, 401, 'Incorrect password');
+        }
+
         const project = await prisma.project.delete({
             where: {
                 id: projectId as string
@@ -150,6 +157,12 @@ export const rotateApiKeyController = async (req: Request, res: Response) => {
     try {
 
         const projectId = req.params.projectId;
+
+        // require the account password before invalidating the current key
+        const ok = await verifyUserPassword(req.user.id, req.body?.password);
+        if (!ok) {
+            return errorResponse(res, 401, 'Incorrect password');
+        }
 
         const project = await prisma.project.update({
             where: {

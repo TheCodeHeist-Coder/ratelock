@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiZap } from "react-icons/fi";
 
 type Endpoint = { m: "GET" | "POST"; p: string; limit: number };
 
