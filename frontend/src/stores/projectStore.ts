@@ -20,9 +20,9 @@ interface ProjectState {
     fetchProject: (id: string) => Promise<Project | null>;
     createProject: (name: string, description?: string) => Promise<Project>;
     updateProject: (id: string, data: { name?: string; description?: string }) => Promise<void>;
-    deleteProject: (id: string) => Promise<void>;
+    deleteProject: (id: string, password: string) => Promise<void>;
     setActiveProject: (p: Project | null) => void;
-    rotateKey: (id: string) => Promise<void>;
+    rotateKey: (id: string, password: string) => Promise<void>;
 
     // for rules
     fetchRules: (projectId: string) => Promise<void>;
@@ -87,8 +87,8 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
         }));
     },
 
-    deleteProject: async (id) => {
-        await api.delete(`/projects/${id}`);
+    deleteProject: async (id, password) => {
+        await api.delete(`/projects/${id}`, { data: { password } });
         set((s) => ({
             projects: s.projects.filter((p) => p.id !== id),
             activeProject: s.activeProject?.id === id ? null : s.activeProject,
@@ -97,8 +97,8 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
 
     setActiveProject: (p) => set({ activeProject: p, rules: [], alerts: [], stats: null, events: [] }),
 
-    rotateKey: async (id) => {
-        const { data } = await api.post(`/projects/${id}/rotate-api-key`);
+    rotateKey: async (id, password) => {
+        const { data } = await api.post(`/projects/${id}/rotate-api-key`, { password });
         set((s) => ({
             projects: s.projects.map((p) => (p.id === id ? data.project : p)),
             activeProject: s.activeProject?.id === id ? data.project : s.activeProject,

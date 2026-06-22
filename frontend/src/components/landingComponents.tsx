@@ -1,4 +1,6 @@
-import { FiCode, FiZap } from "react-icons/fi";
+import { FiCode, FiZap, FiCheck } from "react-icons/fi";
+import { Link } from "react-router-dom";
+import { useAuthStore } from "../stores/authStore";
 
 // Site is dark-only now — the light/dark toggle was removed.
 const darkMode = true;
@@ -96,7 +98,7 @@ export const IntegrationSection = () => (
               },
             ].map((item) => (
               <div key={item.step} className="flex gap-6">
-                <span className="text-2xl font-bold text-green-500 font-mono flex-shrink-0">
+                <span className="text-2xl font-bold text-green-400 font-mono flex-shrink-0">
                   {item.step}
                 </span>
                 <div>
@@ -129,7 +131,7 @@ export const IntegrationSection = () => (
           >
             <div className="flex items-center justify-between mb-4">
               <span className="text-white/40 text-xs">javascript</span>
-              <FiCode className="text-green-500" />
+              <FiCode className="text-white/40" />
             </div>
             <pre className="text-white/80 overflow-x-auto leading-relaxed">
               <code>{`import { RateLock } from "@ratelock/sdk";
@@ -164,7 +166,7 @@ export const StatsSection = () => (
       }`}
       style={{
         backgroundImage:
-          "linear-gradient(rgba(74,222,128,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(74,222,128,0.3) 1px, transparent 1px)",
+          "linear-gradient(rgba(255,255,255,0.18) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.18) 1px, transparent 1px)",
         backgroundSize: "40px 40px",
       }}
     />
@@ -184,8 +186,8 @@ export const StatsSection = () => (
             <h2
               className={`text-6xl md:text-7xl font-bold mb-4 transition-colors duration-300 ${
                 darkMode
-                  ? "text-green-400 stat-glow-dark"
-                  : "text-green-600 stat-glow-light"
+                  ? "text-green-400"
+                  : "text-green-600"
               }`}
             >
               {stat.value}
@@ -205,9 +207,161 @@ export const StatsSection = () => (
 );
 
 /* ─────────────────────────────────────────────
+   PricingSection
+───────────────────────────────────────────── */
+const PRICING_PLANS = [
+  {
+    name: "Monthly",
+    price: 8,
+    period: "/month",
+    cadence: "Billed every month",
+    tagline: "Kick the tyres on a real project.",
+    badge: null as string | null,
+    featured: false,
+    save: null as string | null,
+  },
+  {
+    name: "Quarterly",
+    price: 20,
+    period: "/3 months",
+    cadence: "Billed every 3 months",
+    tagline: "For teams shipping to production.",
+    badge: "Most popular",
+    featured: true,
+    save: "Save 17%",
+  },
+  {
+    name: "Yearly",
+    price: 80,
+    period: "/year",
+    cadence: "Billed once a year",
+    tagline: "Best value for serious traffic.",
+    badge: "Best value",
+    featured: false,
+    save: "Save 17%",
+  },
+];
+
+const PRICING_FEATURES = [
+  "Unlimited projects & API keys",
+  "Sliding-window rate limiting",
+  "Real-time traffic analytics",
+  "Email, Slack & webhook alerts",
+  "Edge network · <1ms checks",
+];
+
+export const PricingSection = () => {
+  const loggedIn = useAuthStore((s) => !!s.user);
+  return (
+    <section id="pricing" className="relative overflow-hidden bg-black py-24">
+      {/* ambient glow */}
+      <div className="pointer-events-none absolute left-1/2 top-0 h-96 w-96 -translate-x-1/2 rounded-full bg-green-400/5 blur-[150px]" />
+
+      <div className="container relative z-10 mx-auto px-6">
+        {/* header */}
+        <div className="mx-auto mb-16 max-w-2xl text-center">
+          <p className="font-mono text-xs font-bold uppercase tracking-[0.3em] text-green-400">
+            Pricing
+          </p>
+          <h2 className="mt-3 text-4xl font-bold text-white md:text-5xl">
+            Simple, transparent pricing
+          </h2>
+          <p className="mt-4 text-lg text-[#A1A1AA]">
+            One plan, every feature. Pick the billing period that suits you — the longer
+            you commit, the more you save.
+          </p>
+        </div>
+
+        {/* free tier banner */}
+        <div className="mx-auto mb-12 flex max-w-2xl flex-col items-center gap-3.5 rounded-2xl border border-green-400/20 bg-green-400/[0.04] px-6 py-4 text-center sm:flex-row sm:text-left">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-green-400/10 text-green-400">
+            <FiZap size={18} />
+          </div>
+          <p className="text-sm text-gray-300">
+            <span className="font-semibold text-white">Your first 500 requests are free.</span>{" "}
+            Every account starts with a 500-request guard each month — absolutely free, no
+            card required.
+          </p>
+        </div>
+
+        {/* cards */}
+        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
+          {PRICING_PLANS.map((plan) => (
+            <div
+              key={plan.name}
+              className={`relative rounded-3xl border p-8 backdrop-blur-sm transition-all duration-300 ${
+                plan.featured
+                  ? "border-green-400/40 bg-green-400/[0.05] shadow-[0_0_50px_rgba(74,222,128,0.12)] md:-translate-y-3"
+                  : "border-white/10 bg-white/5 hover:border-white/20"
+              }`}
+            >
+              {plan.badge && (
+                <span
+                  className={`absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-[0.2em] ${
+                    plan.featured
+                      ? "bg-green-400 text-black"
+                      : "border border-white/15 bg-black text-[#A1A1AA]"
+                  }`}
+                >
+                  {plan.badge}
+                </span>
+              )}
+
+              <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-white">
+                {plan.name}
+              </h3>
+              <p className="mt-1.5 text-sm text-[#A1A1AA]">{plan.tagline}</p>
+
+              <div className="mt-6 flex items-baseline gap-1.5">
+                <span className="text-5xl font-bold text-white">${plan.price}</span>
+                <span className="text-sm font-medium text-[#71717A]">{plan.period}</span>
+              </div>
+              <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-[#71717A]">
+                <span>{plan.cadence}</span>
+                {plan.save && (
+                  <span className="rounded-full border border-white/15 bg-white/5 px-2 py-0.5 font-semibold text-gray-300">
+                    {plan.save}
+                  </span>
+                )}
+              </div>
+
+              <Link
+                to={loggedIn ? "/dashboard" : "/register"}
+                className={`mt-7 flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition-all duration-200 ${
+                  plan.featured
+                    ? "bg-green-400 text-black hover:bg-green-300"
+                    : "border border-white/15 text-white hover:border-white/40 hover:bg-white/5"
+                }`}
+              >
+                {loggedIn ? "Go to dashboard" : "Get started"}
+              </Link>
+
+              <ul className="mt-8 space-y-3">
+                {PRICING_FEATURES.map((f) => (
+                  <li key={f} className="flex items-start gap-2.5 text-sm text-gray-300">
+                    <FiCheck className="mt-0.5 shrink-0 text-green-400" size={16} />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-10 text-center text-xs text-[#71717A]">
+          Prices in USD. Cancel anytime · no setup fees.
+        </p>
+      </div>
+    </section>
+  );
+};
+
+/* ─────────────────────────────────────────────
    CTASection
 ───────────────────────────────────────────── */
-export const CTASection = () => (
+export const CTASection = () => {
+  const loggedIn = useAuthStore((s) => !!s.user);
+  return (
   <section
     className={`py-24 transition-colors duration-300 ${
       darkMode ? "bg-black" : "bg-white"
@@ -248,29 +402,32 @@ export const CTASection = () => (
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-          <button
-            className={`px-10 py-4 font-bold rounded-lg uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+          <Link
+            to={loggedIn ? "/docs" : "/register"}
+            className={`inline-block px-10 py-4 font-bold rounded-lg uppercase tracking-wider transition-all duration-200 cursor-pointer ${
               darkMode
-                ? "bg-green-400 text-black hover:bg-white"
+                ? "bg-green-400 text-black hover:bg-green-300"
                 : "bg-green-600 text-white hover:bg-green-700"
             }`}
           >
-            Create Developer Account
-          </button>
-          <button
+            {loggedIn ? "Read the Docs" : "Create Developer Account"}
+          </Link>
+          <a
+            href="#pricing"
             className={`px-10 py-4 font-bold rounded-lg uppercase tracking-wider border transition-all duration-200 cursor-pointer ${
               darkMode
-                ? "text-white border-white/20 hover:text-green-400 hover:border-green-400"
-                : "text-gray-700 border-gray-300 hover:text-green-600 hover:border-green-600"
+                ? "text-white border-white/20 hover:border-white/40 hover:bg-white/5"
+                : "text-gray-700 border-gray-300 hover:border-gray-400"
             }`}
           >
             View Pricing Plans
-          </button>
+          </a>
         </div>
       </div>
     </div>
   </section>
-);
+  );
+};
 
 /* ─────────────────────────────────────────────
    Footer

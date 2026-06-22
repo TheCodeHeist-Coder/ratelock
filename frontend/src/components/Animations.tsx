@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { FaServer } from "react-icons/fa";
-import { FiShield } from "react-icons/fi";
 
 export default function RateLimiterHero() {
   const allowedParticles = Array.from({ length: 8 });
@@ -10,7 +9,7 @@ export default function RateLimiterHero() {
     <section className="relative h-[600px] overflow-hidden bg-black flex items-center justify-center">
 
       {/* Background glow — brand green */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,230,168,0.08),transparent_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,230,168,0.07),transparent_70%)]" />
 
       {/* API Server — rack */}
       <div className="absolute right-32 top-1/2 z-20 -translate-y-1/2">
@@ -36,7 +35,7 @@ export default function RateLimiterHero() {
               >
                 {/* status LEDs */}
                 <span
-                  className={`h-1.5 w-1.5 rounded-full ${u % 3 === 0 ? "bg-amber-400" : "bg-emerald-400"}`}
+                  className={`h-1.5 w-1.5 rounded-full ${u % 3 === 0 ? "bg-white/30" : "bg-emerald-400"}`}
                   style={{ animation: "pulse 2s infinite", animationDelay: `${u * 0.3}s` }}
                 />
                 <span className="h-1.5 w-1.5 rounded-full bg-white/20" />

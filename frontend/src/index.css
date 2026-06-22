@@ -243,14 +243,14 @@ body::-webkit-scrollbar {
   ══════════════════════════════════════════════ */
 
   .card {
-    @apply rounded-2xl border border-ink-700 bg-ink-900/70 backdrop-blur-xl;
+    @apply rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.05] to-white/[0.02]
+           shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)] backdrop-blur-xl;
   }
 
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 rounded-xl bg-brand-400 px-4 py-2.5
            text-sm font-bold text-black transition-all duration-200
-           shadow-[0_0_20px_rgba(0,230,168,0.18)]
-           hover:shadow-[0_0_24px_rgba(0,230,168,0.4)] hover:-translate-y-0.5
+           hover:shadow-[0_0_22px_rgba(0,230,168,0.22)] hover:-translate-y-0.5
            disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none disabled:translate-y-0
            cursor-pointer;
   }
@@ -306,6 +306,6 @@ body::-webkit-scrollbar {
   }
   .nav-item-active {
     @apply bg-brand-400/10 text-brand-300 border border-brand-400/20
-           shadow-[0_0_18px_rgba(0,230,168,0.08)];
+           shadow-[0_0_18px_-6px_rgba(0,230,168,0.25)];
   }
 }
