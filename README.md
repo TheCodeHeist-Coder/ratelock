@@ -39,7 +39,7 @@ RateLock lives in the gap: **drop-in rate limiting only**, for developers who al
 
 ---
 
-## The Problem
+## The Problems
 
 | Pain point | Reality |
 |---|---|
@@ -56,7 +56,7 @@ RateLock lives in the gap: **drop-in rate limiting only**, for developers who al
 
 RateLock is a **proxy + SDK hybrid** with three integration modes:
 
-1. **SDK (2 lines of code)** — drop the middleware into your existing Express or FastAPI app, point it at your RateLock project API key, done.
+1. **SDK (2 lines of code)** — drop the middleware into your existing Express or FastAPI apps, point it at your RateLock project API key, done.
 2. **HTTP check endpoint** — call `/api/rl/check` from any language before processing a request.
 3. **Proxy mode** *(coming soon)* — point your DNS at RateLock, zero code changes at all.
 
