@@ -58,38 +58,48 @@ export default function ProjectDetail() {
         <FiArrowLeft size={13} /> Projects
       </button>
 
-      <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div className="min-w-0">
-          <h1 className="truncate font-main text-2xl font-bold tracking-wide text-white">
-            {project?.name ?? "Loading…"}
-          </h1>
-          <p className="mt-0.5 flex items-center gap-2 text-sm text-ink-400">
-            {project?.description || "No description"}
-          </p>
+      <div className="mb-7 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex min-w-0 items-center gap-4">
+          <div className="hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-400/20 to-brand-600/5 text-brand-400 ring-1 ring-brand-400/20 sm:flex">
+            <FiShield size={24} />
+          </div>
+          <div className="min-w-0">
+            <h1 className="truncate font-main text-2xl font-bold tracking-tight text-white sm:text-3xl">
+              {project?.name ?? "Loading…"}
+            </h1>
+            <p className="mt-0.5 flex items-center gap-2 truncate text-sm text-ink-400">
+              {project?.description || "No description"}
+            </p>
+          </div>
         </div>
         {project && (
           <span className="inline-flex items-center gap-2 self-start rounded-full border border-brand-400/30 bg-brand-400/5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-brand-300">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-400" /> Active
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-75" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand-400" />
+            </span>
+            Active
           </span>
         )}
       </div>
 
       {/* Tabs */}
-      <div className="mb-8 flex gap-1 overflow-x-auto border-b border-white/5">
+      <div className="mb-8 flex gap-1.5 overflow-x-auto rounded-2xl border border-white/[0.06] bg-white/[0.02] p-1.5 backdrop-blur-sm">
         {tabs.map((t) => (
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`relative flex cursor-pointer items-center gap-2 whitespace-nowrap px-4 py-3 text-sm font-medium transition-colors ${
-              tab === t.key ? "text-brand-300" : "text-ink-400 hover:text-white"
+            className={`relative flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
+              tab === t.key
+                ? "bg-brand-400/10 text-brand-200 shadow-[inset_0_0_0_1px_rgba(0,230,168,0.25),0_0_18px_-8px_rgba(0,230,168,0.5)]"
+                : "text-ink-400 hover:bg-white/[0.04] hover:text-white"
             }`}
           >
             {t.icon}
             {t.label}
             {t.count !== undefined && t.count > 0 && (
-              <span className="rounded-full bg-white/5 px-1.5 py-0.5 text-[10px] text-ink-400">{t.count}</span>
+              <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-semibold ${tab === t.key ? "bg-brand-400/20 text-brand-200" : "bg-white/5 text-ink-400"}`}>{t.count}</span>
             )}
-            {tab === t.key && <span className="absolute inset-x-0 -bottom-px h-0.5 bg-brand-400" />}
           </button>
         ))}
       </div>
@@ -113,18 +123,23 @@ function OverviewTab({ stats, events, statsHours, onRange }: {
   const blockRate = stats ? Math.round((stats.block_rate ?? 0) * 100) / 100 : 0;
   return (
     <div className="space-y-6 animate-slide-up">
-      <div className="flex items-center justify-end gap-1">
-        {[1, 24, 168].map((h) => (
-          <button
-            key={h}
-            onClick={() => onRange(h)}
-            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
-              statsHours === h ? "bg-brand-400/10 text-brand-300" : "text-ink-500 hover:text-white"
-            }`}
-          >
-            {h === 1 ? "1h" : h === 24 ? "24h" : "7d"}
-          </button>
-        ))}
+      <div className="flex items-center justify-between">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-ink-500">Traffic overview</p>
+        <div className="flex items-center gap-1 rounded-xl border border-white/[0.06] bg-white/[0.02] p-1">
+          {[1, 24, 168].map((h) => (
+            <button
+              key={h}
+              onClick={() => onRange(h)}
+              className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
+                statsHours === h
+                  ? "bg-brand-400/15 text-brand-200 shadow-[inset_0_0_0_1px_rgba(0,230,168,0.2)]"
+                  : "text-ink-500 hover:text-white"
+              }`}
+            >
+              {h === 1 ? "1h" : h === 24 ? "24h" : "7d"}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
@@ -190,14 +205,19 @@ function OverviewTab({ stats, events, statsHours, onRange }: {
 
 function StatCard({ icon, label, value, tone }: { icon: React.ReactNode; label: string; value?: number | string; tone?: "good" | "bad" }) {
   const toneClass =
-    tone === "good" ? "bg-brand-400/10 text-brand-400"
-    : tone === "bad" ? "bg-red-500/10 text-red-400"
-    : "bg-white/5 text-ink-300";
+    tone === "good" ? "bg-gradient-to-br from-brand-400/20 to-brand-600/5 text-brand-400 ring-brand-400/20"
+    : tone === "bad" ? "bg-gradient-to-br from-red-500/20 to-red-700/5 text-red-400 ring-red-500/20"
+    : "bg-gradient-to-br from-white/10 to-white/[0.02] text-ink-200 ring-white/10";
+  const glow =
+    tone === "good" ? "rgba(0,230,168,0.12)"
+    : tone === "bad" ? "rgba(239,68,68,0.12)"
+    : "rgba(255,255,255,0.06)";
   return (
-    <div className="card p-5 transition-colors duration-200 hover:border-white/15">
-      <div className={`mb-3 flex h-9 w-9 font-main items-center justify-center rounded-lg ${toneClass}`}>{icon}</div>
-      <p className="stat-value">{value ?? "—"}</p>
-      <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.15em] text-ink-500">{label}</p>
+    <div className="card-interactive group p-5">
+      <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100" style={{ background: glow }} />
+      <div className={`relative mb-3 flex h-10 w-10 items-center justify-center rounded-xl font-main ring-1 ${toneClass}`}>{icon}</div>
+      <p className="stat-value relative">{value ?? "—"}</p>
+      <p className="relative mt-1 text-[11px] font-bold uppercase tracking-[0.15em] text-ink-500">{label}</p>
     </div>
   );
 }
