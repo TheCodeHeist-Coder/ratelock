@@ -21,33 +21,15 @@ export default function DashboardLayout() {
 
   return (
     <div className="relative min-h-screen bg-[#050506] text-white font-main selection:bg-[#00E6A8] selection:text-black">
-      {/* ── Ambient background field ── */}
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        <div className="absolute -top-40 -left-40 h-[36rem] w-[36rem] rounded-full bg-brand-400/[0.07] blur-[160px]" />
-        <div className="absolute top-1/3 right-0 h-[30rem] w-[30rem] translate-x-1/3 rounded-full bg-emerald-500/[0.05] blur-[150px]" />
-        <div
-          className="absolute inset-0 opacity-[0.15]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)",
-            backgroundSize: "56px 56px",
-            maskImage: "radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%)",
-          }}
-        />
-      </div>
-
       {/* ── Sidebar (desktop) ── */}
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-white/[0.06] bg-[#0a0a0c]/70 backdrop-blur-2xl lg:flex">
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-white/[0.06] bg-[#08090a] lg:flex">
         {/* Logo */}
         <div className="flex items-center gap-2.5 px-6 py-6">
-          <div className="relative">
-            <div className="absolute inset-0 rounded-xl bg-brand-400/30 blur-md" />
-            <img src="/logo.png" alt="RateLock" className="relative h-9 w-auto" />
-          </div>
+          <img src="/logo.png" alt="RateLock" className="h-9 w-auto" />
           <h1 className="font-special text-lg font-bold tracking-tight">RateLock</h1>
         </div>
 
-        <div className="mx-6 mb-2 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        <div className="mx-6 mb-2 h-px bg-white/[0.06]" />
 
         {/* Nav */}
         <nav className="flex-1 space-y-1 px-3 py-3">
@@ -87,21 +69,10 @@ export default function DashboardLayout() {
           </NavLink>
         </nav>
 
-        {/* Status pill */}
-        <div className="px-4 pb-2">
-          <div className="flex items-center gap-2.5 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3.5 py-2.5">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-400" />
-            </span>
-            <span className="text-[11px] font-medium text-ink-300">All systems operational</span>
-          </div>
-        </div>
-
         {/* User card */}
         <div className="border-t border-white/[0.06] p-3">
           <div className="flex items-center gap-3 rounded-xl px-2.5 py-2.5 transition-colors hover:bg-white/[0.03]">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-brand-400/25 to-brand-600/10 text-xs font-bold text-brand-200 ring-1 ring-brand-400/20">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/[0.08] bg-white/[0.03] text-xs font-bold text-ink-300">
               {initials || "U"}
             </div>
             <div className="min-w-0 flex-1">
