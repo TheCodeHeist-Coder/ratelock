@@ -38,6 +38,7 @@ interface ProjectState {
 
     // stats & events
     fetchStats: (projectId: string, hours?: number) => Promise<void>;
+    fetchStatsFor: (projectId: string, hours: number) => Promise<DashboardStats | null>;
     fetchEvents: (projectId: string) => Promise<void>;
     setStatsHours: (h: number) => void;
 }
@@ -181,6 +182,17 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
             set({ stats: data?.stats ?? null });
         } catch {
             set({ stats: null });
+        }
+    },
+
+    // Fetch stats for a project without touching the shared `stats` slot
+    // (used by the Analytics page, which manages its own selection).
+    fetchStatsFor: async (projectId, hours) => {
+        try {
+            const { data } = await api.get(`/projects/${projectId}/states?hours=${hours}`);
+            return data?.stats ?? null;
+        } catch {
+            return null;
         }
     },
 

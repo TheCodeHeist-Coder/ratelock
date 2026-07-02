@@ -48,13 +48,17 @@ export default function DashboardLayout() {
               className="ml-auto opacity-0 -translate-x-1 transition-all group-hover:opacity-60 group-hover:translate-x-0"
             />
           </NavLink>
-          <a className="nav-item cursor-not-allowed opacity-40" title="Coming soon">
+          <NavLink
+            to="/dashboard/analytics"
+            className={({ isActive }) => `nav-item group ${isActive ? "nav-item-active" : ""}`}
+          >
             <FiActivity size={17} />
             Analytics
-            <span className="ml-auto rounded-full border border-white/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-ink-500">
-              soon
-            </span>
-          </a>
+            <FiChevronRight
+              size={14}
+              className="ml-auto opacity-0 -translate-x-1 transition-all group-hover:opacity-60 group-hover:translate-x-0"
+            />
+          </NavLink>
           <NavLink
             to="/docs"
             className={({ isActive }) => `nav-item group ${isActive ? "nav-item-active" : ""}`}
