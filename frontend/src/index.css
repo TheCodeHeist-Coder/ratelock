@@ -73,12 +73,22 @@
     0%   { opacity: 0; }
     100% { opacity: 1; }
   }
+  @keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes rise {
+    0%   { opacity: 0; transform: translateY(14px) scale(0.99); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
 
   --animate-float:      float 6s ease-in-out infinite;
   --animate-scanline:   scanline 8s linear infinite;
   --animate-pulse-glow: pulse-glow 4s ease-in-out infinite;
   --animate-slide-up:   slide-up 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   --animate-fade-in:    fade-in 0.4s ease-out;
+  --animate-shimmer:    shimmer 2.2s linear infinite;
+  --animate-rise:       rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* ─── Base ─── */
@@ -245,6 +255,42 @@ body::-webkit-scrollbar {
   .card {
     @apply rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.05] to-white/[0.02]
            shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)] backdrop-blur-xl;
+  }
+
+  /* Interactive card — lifts + glows on hover, with a top highlight sheen.
+     Add the `group` class alongside it in markup so child `group-hover:` glows fire. */
+  .card-interactive {
+    @apply relative overflow-hidden rounded-2xl border border-white/[0.08]
+           bg-gradient-to-b from-white/[0.05] to-white/[0.02] backdrop-blur-xl
+           shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]
+           transition-all duration-300 ease-out
+           hover:-translate-y-1 hover:border-brand-400/25
+           hover:shadow-[0_20px_50px_-24px_rgba(0,230,168,0.35),inset_0_1px_0_0_rgba(255,255,255,0.08)];
+  }
+  .card-interactive::before {
+    content: "";
+    @apply pointer-events-none absolute inset-x-0 top-0 h-px
+           bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0
+           transition-opacity duration-300;
+  }
+  .card-interactive:hover::before { @apply opacity-100; }
+
+  /* Gradient headline text */
+  .text-gradient {
+    @apply bg-gradient-to-br from-white via-white to-brand-300 bg-clip-text text-transparent;
+  }
+
+  /* Shimmering skeleton block */
+  .skeleton {
+    @apply rounded-lg;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.04) 25%,
+      rgba(255, 255, 255, 0.09) 37%,
+      rgba(255, 255, 255, 0.04) 63%
+    );
+    background-size: 200% 100%;
+    animation: var(--animate-shimmer);
   }
 
   .btn-primary {
