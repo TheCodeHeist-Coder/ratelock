@@ -7,6 +7,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import DashboardLayout from './components/dashboard/DashboardLayout'
 import ProjectsList from './screens/Dashboard'
 import ProjectDetail from './screens/ProjectDetail'
+import Analytics from './screens/Analytics'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path='/dashboard' element={<DashboardLayout />}>
             <Route index element={<ProjectsList />} />
+            <Route path='analytics' element={<Analytics />} />
             <Route path='projects/:projectId' element={<ProjectDetail />} />
           </Route>
         </Route>
