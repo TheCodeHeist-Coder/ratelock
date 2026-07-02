@@ -73,22 +73,12 @@
     0%   { opacity: 0; }
     100% { opacity: 1; }
   }
-  @keyframes shimmer {
-    0%   { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
-  @keyframes rise {
-    0%   { opacity: 0; transform: translateY(14px) scale(0.99); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
-  }
 
   --animate-float:      float 6s ease-in-out infinite;
   --animate-scanline:   scanline 8s linear infinite;
   --animate-pulse-glow: pulse-glow 4s ease-in-out infinite;
   --animate-slide-up:   slide-up 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   --animate-fade-in:    fade-in 0.4s ease-out;
-  --animate-shimmer:    shimmer 2.2s linear infinite;
-  --animate-rise:       rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* ─── Base ─── */
@@ -253,51 +243,31 @@ body::-webkit-scrollbar {
   ══════════════════════════════════════════════ */
 
   .card {
-    @apply rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.05] to-white/[0.02]
-           shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)] backdrop-blur-xl;
+    @apply rounded-2xl border border-white/[0.07] bg-white/[0.02];
   }
 
-  /* Interactive card — lifts + glows on hover, with a top highlight sheen.
-     Add the `group` class alongside it in markup so child `group-hover:` glows fire. */
+  /* Interactive card — minimal: a flat dark surface with a quiet border shift on hover. */
   .card-interactive {
-    @apply relative overflow-hidden rounded-2xl border border-white/[0.08]
-           bg-gradient-to-b from-white/[0.05] to-white/[0.02] backdrop-blur-xl
-           shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]
-           transition-all duration-300 ease-out
-           hover:-translate-y-1 hover:border-brand-400/25
-           hover:shadow-[0_20px_50px_-24px_rgba(0,230,168,0.35),inset_0_1px_0_0_rgba(255,255,255,0.08)];
+    @apply relative overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.02]
+           transition-colors duration-200 ease-out
+           hover:border-brand-400/20 hover:bg-white/[0.03];
   }
-  .card-interactive::before {
-    content: "";
-    @apply pointer-events-none absolute inset-x-0 top-0 h-px
-           bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0
-           transition-opacity duration-300;
-  }
-  .card-interactive:hover::before { @apply opacity-100; }
 
-  /* Gradient headline text */
+  /* Headline text — flat, no gradient */
   .text-gradient {
-    @apply bg-gradient-to-br from-white via-white to-brand-300 bg-clip-text text-transparent;
+    @apply text-white;
   }
 
-  /* Shimmering skeleton block */
+  /* Skeleton block — static dim surface, no shimmer */
   .skeleton {
-    @apply rounded-lg;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.04) 25%,
-      rgba(255, 255, 255, 0.09) 37%,
-      rgba(255, 255, 255, 0.04) 63%
-    );
-    background-size: 200% 100%;
-    animation: var(--animate-shimmer);
+    @apply rounded-lg bg-white/[0.04];
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-brand-400 px-4 py-2.5
-           text-sm font-bold text-black transition-all duration-200
-           hover:shadow-[0_0_22px_rgba(0,230,168,0.22)] hover:-translate-y-0.5
-           disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none disabled:translate-y-0
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-brand-500 px-4 py-2.5
+           text-sm font-bold text-black transition-colors duration-200
+           hover:bg-brand-400
+           disabled:cursor-not-allowed disabled:opacity-50
            cursor-pointer;
   }
 
@@ -351,7 +321,6 @@ body::-webkit-scrollbar {
            transition-all duration-200 hover:text-white hover:bg-white/5 cursor-pointer;
   }
   .nav-item-active {
-    @apply bg-brand-400/10 text-brand-300 border border-brand-400/20
-           shadow-[0_0_18px_-6px_rgba(0,230,168,0.25)];
+    @apply bg-brand-400/[0.08] text-brand-300 border border-brand-400/15;
   }
 }

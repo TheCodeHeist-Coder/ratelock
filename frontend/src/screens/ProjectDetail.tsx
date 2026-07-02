@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { format } from "date-fns";
 import {
   FiArrowLeft, FiPlus, FiX, FiTrash2, FiEdit2, FiCopy, FiCheck,
-  FiRefreshCw, FiActivity, FiShield, FiBell, FiSettings, FiBarChart2, FiAlertTriangle,
+  FiRefreshCw, FiActivity, FiShield, FiBell, FiSettings,
   FiClock, FiZap,
 } from "react-icons/fi";
 import { useProjectStore } from "../stores/projectStore";
@@ -58,29 +58,13 @@ export default function ProjectDetail() {
         <FiArrowLeft size={13} /> Projects
       </button>
 
-      <div className="mb-7 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex min-w-0 items-center gap-4">
-          <div className="hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-400/20 to-brand-600/5 text-brand-400 ring-1 ring-brand-400/20 sm:flex">
-            <FiShield size={24} />
-          </div>
-          <div className="min-w-0">
-            <h1 className="truncate font-main text-2xl font-bold tracking-tight text-white sm:text-3xl">
-              {project?.name ?? "Loading…"}
-            </h1>
-            <p className="mt-0.5 flex items-center gap-2 truncate text-sm text-ink-400">
-              {project?.description || "No description"}
-            </p>
-          </div>
-        </div>
-        {project && (
-          <span className="inline-flex items-center gap-2 self-start rounded-full border border-brand-400/30 bg-brand-400/5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-brand-300">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-75" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand-400" />
-            </span>
-            Active
-          </span>
-        )}
+      <div className="mb-7 min-w-0">
+        <h1 className="truncate font-main text-2xl font-bold tracking-tight text-white sm:text-3xl">
+          {project?.name ?? "Loading…"}
+        </h1>
+        <p className="mt-0.5 truncate text-sm text-ink-400">
+          {project?.description || "No description"}
+        </p>
       </div>
 
       {/* Tabs */}
@@ -89,16 +73,16 @@ export default function ProjectDetail() {
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`relative flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
+            className={`relative flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-medium transition-colors duration-200 ${
               tab === t.key
-                ? "bg-brand-400/10 text-brand-200 shadow-[inset_0_0_0_1px_rgba(0,230,168,0.25),0_0_18px_-8px_rgba(0,230,168,0.5)]"
+                ? "bg-brand-400/[0.08] text-brand-300"
                 : "text-ink-400 hover:bg-white/[0.04] hover:text-white"
             }`}
           >
             {t.icon}
             {t.label}
             {t.count !== undefined && t.count > 0 && (
-              <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-semibold ${tab === t.key ? "bg-brand-400/20 text-brand-200" : "bg-white/5 text-ink-400"}`}>{t.count}</span>
+              <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-semibold ${tab === t.key ? "bg-brand-400/15 text-brand-300" : "bg-white/5 text-ink-400"}`}>{t.count}</span>
             )}
           </button>
         ))}
@@ -132,7 +116,7 @@ function OverviewTab({ stats, events, statsHours, onRange }: {
               onClick={() => onRange(h)}
               className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
                 statsHours === h
-                  ? "bg-brand-400/15 text-brand-200 shadow-[inset_0_0_0_1px_rgba(0,230,168,0.2)]"
+                  ? "bg-brand-400/[0.08] text-brand-300"
                   : "text-ink-500 hover:text-white"
               }`}
             >
@@ -143,15 +127,15 @@ function OverviewTab({ stats, events, statsHours, onRange }: {
       </div>
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <StatCard icon={<FiActivity size={16} />} label="Total requests" value={stats?.total_requests} />
-        <StatCard icon={<FiCheck size={16} />} label="Allowed" value={stats?.allowed_requests} tone="good" />
-        <StatCard icon={<FiAlertTriangle size={16} />} label="Blocked" value={stats?.blocked_requests} tone="bad" />
-        <StatCard icon={<FiBarChart2 size={16} />} label="Block rate" value={stats ? `${blockRate}%` : undefined} />
+        <StatCard label="Total requests" value={stats?.total_requests} />
+        <StatCard label="Allowed" value={stats?.allowed_requests} tone="good" />
+        <StatCard label="Blocked" value={stats?.blocked_requests} tone="bad" />
+        <StatCard label="Block rate" value={stats ? `${blockRate}%` : undefined} />
       </div>
 
       {!stats && (
-        <div className="card flex items-center gap-3 border-brand-400/15 bg-brand-400/5 p-4 text-sm text-ink-300">
-          <FiClock className="shrink-0 text-brand-400" size={18} />
+        <div className="card flex items-center gap-3 p-4 text-sm text-ink-400">
+          <FiClock className="shrink-0 text-ink-500" size={18} />
           Analytics aggregation isn’t reporting data yet. Once your SDK starts sending traffic through the engine, request volume, block rate and latency will appear here.
         </div>
       )}
@@ -172,7 +156,7 @@ function OverviewTab({ stats, events, statsHours, onRange }: {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-[10px] uppercase tracking-[0.15em] text-ink-500">
+                <tr className="bg-white/[0.015] text-left text-[10px] uppercase tracking-[0.15em] text-ink-500">
                   <th className="px-5 py-3 font-bold">Endpoint</th>
                   <th className="px-5 py-3 font-bold">Method</th>
                   <th className="px-5 py-3 font-bold">Status</th>
@@ -182,7 +166,7 @@ function OverviewTab({ stats, events, statsHours, onRange }: {
               </thead>
               <tbody>
                 {events.map((e) => (
-                  <tr key={e.id} className="border-t border-white/5 text-ink-300">
+                  <tr key={e.id} className="border-t border-white/5 text-ink-300 transition-colors hover:bg-white/[0.02]">
                     <td className="px-5 py-3 font-mono text-xs text-white">{e.endpoint}</td>
                     <td className="px-5 py-3 text-xs">{e.method}</td>
                     <td className="px-5 py-3">
@@ -203,21 +187,15 @@ function OverviewTab({ stats, events, statsHours, onRange }: {
   );
 }
 
-function StatCard({ icon, label, value, tone }: { icon: React.ReactNode; label: string; value?: number | string; tone?: "good" | "bad" }) {
-  const toneClass =
-    tone === "good" ? "bg-gradient-to-br from-brand-400/20 to-brand-600/5 text-brand-400 ring-brand-400/20"
-    : tone === "bad" ? "bg-gradient-to-br from-red-500/20 to-red-700/5 text-red-400 ring-red-500/20"
-    : "bg-gradient-to-br from-white/10 to-white/[0.02] text-ink-200 ring-white/10";
-  const glow =
-    tone === "good" ? "rgba(0,230,168,0.12)"
-    : tone === "bad" ? "rgba(239,68,68,0.12)"
-    : "rgba(255,255,255,0.06)";
+function StatCard({ label, value, tone }: { label: string; value?: number | string; tone?: "good" | "bad" }) {
+  const dot = tone === "good" ? "bg-brand-500" : tone === "bad" ? "bg-red-500" : "bg-ink-600";
   return (
-    <div className="card-interactive group p-5">
-      <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100" style={{ background: glow }} />
-      <div className={`relative mb-3 flex h-10 w-10 items-center justify-center rounded-xl font-main ring-1 ${toneClass}`}>{icon}</div>
-      <p className="stat-value relative">{value ?? "—"}</p>
-      <p className="relative mt-1 text-[11px] font-bold uppercase tracking-[0.15em] text-ink-500">{label}</p>
+    <div className="card-interactive p-5">
+      <p className="stat-value text-[28px] leading-none">{value ?? "—"}</p>
+      <p className="mt-2.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-ink-500">
+        <span className={`h-1.5 w-1.5 rounded-full ${dot}`} />
+        {label}
+      </p>
     </div>
   );
 }
@@ -244,7 +222,7 @@ function RulesTab({ projectId, rules }: { projectId: string; rules: Rule[] }) {
       ) : (
         <div className="space-y-3">
           {rules.map((r) => (
-            <div key={r.id} className="card flex flex-col gap-4 p-5 sm:flex-row sm:items-center">
+            <div key={r.id} className="card-interactive flex flex-col gap-4 p-5 sm:flex-row sm:items-center">
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <h3 className="truncate font-semibold text-white">{r.name}</h3>
@@ -357,7 +335,7 @@ function AlertsTab({ projectId, alerts }: { projectId: string; alerts: Alert[] }
       ) : (
         <div className="space-y-3">
           {alerts.map((a) => (
-            <div key={a.id} className="card flex flex-col gap-4 p-5 sm:flex-row sm:items-center">
+            <div key={a.id} className="card-interactive flex flex-col gap-4 p-5 sm:flex-row sm:items-center">
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <h3 className="truncate font-semibold text-white">{a.name}</h3>
@@ -592,7 +570,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 function EmptyBlock({ icon, title, hint }: { icon: React.ReactNode; title: string; hint: string }) {
   return (
     <div className="card flex flex-col items-center p-14 text-center">
-      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-400/10 ring-1 ring-brand-400/20 text-brand-400">{icon}</div>
+      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.03] text-ink-400">{icon}</div>
       <h3 className="mb-2 font-semibold text-white">{title}</h3>
       <p className="max-w-sm text-sm text-ink-400">{hint}</p>
     </div>
